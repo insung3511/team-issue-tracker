@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String
+  email          String    @unique
+  password       String
+  role           Role      @default(MEMBER)
+  createdIssues  Issue[]   @relation("creator")
+  assignedIssues Issue[]   @relation("assignee")
+  comments       Comment[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Issue {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String?
+  status      IssueStatus @default(BACKLOG)
+  priority    Priority    @default(MEDIUM)
+  labels      String[]
+  creator     User        @relation("creator", fields: [creatorId], references: [id])
+  creatorId   Int
+  assignee    User?       @relation("assignee", fields: [assigneeId], references: [id])
+  assigneeId  Int?
+  comments    Comment[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  issueId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum IssueStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
