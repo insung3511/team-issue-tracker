@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774209218693,
+  "lastScanned": 1774299508971,
   "projectRoot": "/Users/bahk_insung/Documents/Github/team-issue-tracker",
   "techStack": {
     "languages": [],
@@ -36,7 +36,7 @@
       "path": "backend",
       "purpose": null,
       "fileCount": 8,
-      "lastAccessed": 1774209218646,
+      "lastAccessed": 1774299508936,
       "keyFiles": [
         "jest.config.ts",
         "package-lock.json",
@@ -49,7 +49,7 @@
       "path": "frontend",
       "purpose": null,
       "fileCount": 10,
-      "lastAccessed": 1774209218647,
+      "lastAccessed": 1774299508938,
       "keyFiles": [
         "README.md",
         "eslint.config.js",
@@ -62,14 +62,14 @@
       "path": "backend/node_modules",
       "purpose": "Dependencies",
       "fileCount": 1,
-      "lastAccessed": 1774209218653,
+      "lastAccessed": 1774299508944,
       "keyFiles": []
     },
     "backend/src": {
       "path": "backend/src",
       "purpose": "Source code",
       "fileCount": 2,
-      "lastAccessed": 1774209218654,
+      "lastAccessed": 1774299508945,
       "keyFiles": [
         "app.ts",
         "server.ts"
@@ -79,7 +79,7 @@
       "path": "frontend/dist",
       "purpose": "Distribution/build output",
       "fileCount": 3,
-      "lastAccessed": 1774209218655,
+      "lastAccessed": 1774299508948,
       "keyFiles": [
         "favicon.svg",
         "icons.svg",
@@ -90,14 +90,14 @@
       "path": "frontend/node_modules",
       "purpose": "Dependencies",
       "fileCount": 1,
-      "lastAccessed": 1774209218657,
+      "lastAccessed": 1774299508950,
       "keyFiles": []
     },
     "frontend/public": {
       "path": "frontend/public",
       "purpose": "Public files",
       "fileCount": 2,
-      "lastAccessed": 1774209218657,
+      "lastAccessed": 1774299508953,
       "keyFiles": [
         "favicon.svg",
         "icons.svg"
@@ -107,7 +107,7 @@
       "path": "frontend/src",
       "purpose": "Source code",
       "fileCount": 4,
-      "lastAccessed": 1774209218657,
+      "lastAccessed": 1774299508954,
       "keyFiles": [
         "App.css",
         "App.tsx",

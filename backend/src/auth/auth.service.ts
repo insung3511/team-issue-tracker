@@ -1,13 +1,22 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import { findUserByEmail, createUser } from "./auth.repository";
+import { findUserByEmail, createUser, findUserById } from "./auth.repository";
 import { AppError } from "../errors/AppError";
 import { User } from "../generated/prisma";
 
 const JWT_SECRET = process.env.JWT_SECRET
 
 export type SafeUser = Omit<User, "password">;
+
+export async function getMe(userId: number): Promise<SafeUser> {
+    const user = await findUserById(userId);
+    if (!user) {
+        throw new AppError(404, "User not found");
+    }
+    const { password: _, ...safeUser } = user;
+    return safeUser;
+}
 
 export async function registerUser(name: string, email: string, password: string) {
     const existingUser = await findUserByEmail(email);

@@ -1,8 +1,8 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 1/14
-- **Date**: 2026-03-22
+- **Day**: 2/14
+- **Date**: 2026-03-23
 - **Sprint Status**: on_track
 
 ---
@@ -14,6 +14,11 @@
 > - **Yesterday**: [what was done]
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
+
+### Day 2 — 2026-03-23
+- **Yesterday**: TRACKER-001 회원가입 + TRACKER-002 로그인 완료, CI/CD 구성, Frontend auth 페이지
+- **Today**: TRACKER-003 authenticate 미들웨어 + GET /api/auth/me + Frontend 로그인 상태 유지
+- **Blockers**: None
 
 ### Day 1 — 2026-03-22
 - **Yesterday**: Day 0 셋업 완료 (Prisma schema, Express skeleton, Frontend scaffold)
