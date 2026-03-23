@@ -1,8 +1,8 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 0/14 (Setup complete, Day 1 not started)
-- **Date**: [fill each day]
+- **Day**: 1/14
+- **Date**: 2026-03-22
 - **Sprint Status**: on_track
 
 ---
@@ -15,13 +15,18 @@
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
 
+### Day 1 — 2026-03-22
+- **Yesterday**: Day 0 셋업 완료 (Prisma schema, Express skeleton, Frontend scaffold)
+- **Today**: TRACKER-001 회원가입 API + TRACKER-002 로그인 API + CI/CD 워크플로우 + Frontend auth 페이지
+- **Blockers**: None
+
 ---
 
 ## TS Patterns Learned
 
 | Day | Pattern | File Applied | Notes |
 |-----|---------|--------------|-------|
-| — | — | — | (fill as you learn) |
+| 1 | `Omit<T, K>` | `auth.service.ts` | `Omit<User, 'password'>` + destructuring으로 password 제거 |
 
 ---
 
@@ -37,7 +42,8 @@
 
 | Ticket | Title | Completed On |
 |--------|-------|--------------|
-| — | — | — |
+| TRACKER-001 | [Auth] 회원가입 API 구현 | Day 1 |
+| TRACKER-002 | [Auth] 로그인 API 구현 | Day 1 |
 
 ---
 
@@ -45,9 +51,9 @@
 
 > Continuity notes for PM/Dev Lead/Frontend agents between sessions.
 
-- **Last Dev Lead TS lesson**: (none yet)
-- **Frontend Agent last PR**: (none yet)
-- **PM last ticket issued**: (none yet)
+- **Last Dev Lead TS lesson**: Day 1 — `Omit<T, K>` for SafeUser
+- **Frontend Agent last PR**: Day 1 — auth pages (Login, Register) + RTK Query auth slice
+- **PM last ticket issued**: TRACKER-001, TRACKER-002
 
 ---
 
@@ -56,7 +62,7 @@
 ### TRACKER-001
 - **Title**: [Auth] 회원가입 API 구현
 - **Priority**: HIGH | **SP**: 2
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `POST /api/auth/register` → 201 + `{ success, data: { user, token } }`
   - 이메일 중복 → 409
@@ -66,7 +72,7 @@
 ### TRACKER-002
 - **Title**: [Auth] 로그인 API 구현
 - **Priority**: HIGH | **SP**: 1
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `POST /api/auth/login` → 200 + token
   - 존재하지 않는 이메일 → 401
