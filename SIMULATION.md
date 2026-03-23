@@ -32,6 +32,7 @@
 | Day | Pattern | File Applied | Notes |
 |-----|---------|--------------|-------|
 | 1 | `Omit<T, K>` | `auth.service.ts` | `Omit<User, 'password'>` + destructuring으로 password 제거 |
+| 2 | `Omit` 심화 | `auth.service.ts` | `SafeUser` 타입을 getMe에서 재사용 + non-null assertion(`!`) 학습 |
 
 ---
 
@@ -49,6 +50,7 @@
 |--------|-------|--------------|
 | TRACKER-001 | [Auth] 회원가입 API 구현 | Day 1 |
 | TRACKER-002 | [Auth] 로그인 API 구현 | Day 1 |
+| TRACKER-003 | [Auth] authenticate 미들웨어 | Day 2 |
 
 ---
 
@@ -56,9 +58,9 @@
 
 > Continuity notes for PM/Dev Lead/Frontend agents between sessions.
 
-- **Last Dev Lead TS lesson**: Day 1 — `Omit<T, K>` for SafeUser
+- **Last Dev Lead TS lesson**: Day 2 — `Omit` 심화 + non-null assertion(`!`)
 - **Frontend Agent last PR**: Day 1 — auth pages (Login, Register) + RTK Query auth slice
-- **PM last ticket issued**: TRACKER-001, TRACKER-002
+- **PM last ticket issued**: TRACKER-001, TRACKER-002, TRACKER-003
 
 ---
 
@@ -86,7 +88,7 @@
 ### TRACKER-003
 - **Title**: [Auth] authenticate 미들웨어
 - **Priority**: HIGH | **SP**: 1
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - 유효 토큰 → `req.userId` 설정 후 next()
   - 토큰 없음/만료/위조 → 401

@@ -8,14 +8,14 @@
 - [x] Frontend: auth 페이지 (Login, Register) + RTK Query slice
 - [x] TS 패턴: `Omit<T, K>` — `SafeUser = Omit<User, 'password'>`
 
-## 📌 Day 2 — 진행 중
+## ✅ Day 2 — 완료
 
-- [ ] TRACKER-003: authenticate 미들웨어
+- [x] TRACKER-003: authenticate 미들웨어
   - JWT 검증 → `req.userId` 설정 후 `next()`
   - 토큰 없음/만료/위조 → 401
   - `GET /api/auth/me` → 인증된 유저 정보 반환
-- [ ] TS 패턴: `Omit` 심화 — 여러 필드 제거 + 재사용 가능한 AuthResponse 타입
-- [ ] Frontend: 로그인 상태 유지 로직 + auth guard (서준)
+- [x] TS 패턴: `Omit` 심화 — SafeUser 재사용 + non-null assertion(`!`)
+- [ ] Frontend: 로그인 상태 유지 로직 + auth guard (서준) — 진행 예정
 
 ## 🔜 Upcoming
 
