@@ -1,11 +1,13 @@
 import express from 'express';
 import { errorHandler } from './middleware/errorHandler';
+import authRoutes from './auth/auth.routes';
 
 const app = express();
 
 app.use(express.json());
 
 // TODO: mount routers here as they are implemented
+app.use('/api/auth', authRoutes);
 
 // 404 handler
 app.use((req, res) => {
