@@ -3,9 +3,12 @@ import { authenticate } from "../middleware/auth.middleware";
 import { validate } from "../middleware/validate";
 import { issueSchema } from "./issue.schema";
 import { createIssue } from "./issues.controller";
+import { getIssueById, getIssueByUserId } from "./issues.controller";
 
 const router = Router();
 
 router.post("/", authenticate, validate(issueSchema), createIssue);
+router.get("/", authenticate, getIssueByUserId);
+router.get("/:id", authenticate, getIssueById);
 
 export default router;
