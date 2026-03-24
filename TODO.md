@@ -17,9 +17,16 @@
 - [x] TS 패턴: `Omit` 심화 — SafeUser 재사용 + non-null assertion(`!`)
 - [ ] Frontend: 로그인 상태 유지 로직 + auth guard (서준) — 진행 예정
 
-## 🔜 Upcoming
+## ✅ Day 3 — 완료
 
-- [ ] TRACKER-004: 이슈 생성 API (Day 3)
+- [x] TRACKER-004: 이슈 생성 API
+  - `POST /api/issues` (인증 필요) → 201 + issue
+  - creatorId는 JWT에서 자동 설정 (`req.userId`)
+  - Zod 검증: title 필수, priority enum
+- [x] 레이어드 아키텍처 실전: issues 도메인 (routes→controller→service→repository)
+- [ ] Frontend: 이슈 생성 페이지 + RTK Query issues slice (서준) — 진행 예정
+
+## 🔜 Upcoming
 - [ ] TRACKER-005: 이슈 목록 조회 API (Day 4)
 - [ ] TRACKER-006: 이슈 상세 조회 API (Day 4)
 - [ ] TRACKER-007: 이슈 수정/삭제 API (Day 5)

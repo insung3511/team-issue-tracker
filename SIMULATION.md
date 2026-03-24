@@ -1,7 +1,7 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 2/14
+- **Day**: 3/14
 - **Date**: 2026-03-23
 - **Sprint Status**: on_track
 
@@ -14,6 +14,11 @@
 > - **Yesterday**: [what was done]
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
+
+### Day 3 — 2026-03-23
+- **Yesterday**: TRACKER-003 authenticate 미들웨어 + GET /api/auth/me 완료
+- **Today**: TRACKER-004 이슈 생성 API + TS Generics(ApiResponse<T>) + Frontend 이슈 생성 페이지
+- **Blockers**: None
 
 ### Day 2 — 2026-03-23
 - **Yesterday**: TRACKER-001 회원가입 + TRACKER-002 로그인 완료, CI/CD 구성, Frontend auth 페이지
@@ -33,6 +38,7 @@
 |-----|---------|--------------|-------|
 | 1 | `Omit<T, K>` | `auth.service.ts` | `Omit<User, 'password'>` + destructuring으로 password 제거 |
 | 2 | `Omit` 심화 | `auth.service.ts` | `SafeUser` 타입을 getMe에서 재사용 + non-null assertion(`!`) 학습 |
+| 3 | Generics (`ApiResponse<T>`) 예정 | `issues/` | 레이어드 아키텍처 실전 적용 (routes→controller→service→repository) |
 
 ---
 
@@ -51,6 +57,7 @@
 | TRACKER-001 | [Auth] 회원가입 API 구현 | Day 1 |
 | TRACKER-002 | [Auth] 로그인 API 구현 | Day 1 |
 | TRACKER-003 | [Auth] authenticate 미들웨어 | Day 2 |
+| TRACKER-004 | [Issues] 이슈 생성 API | Day 3 |
 
 ---
 
@@ -58,9 +65,9 @@
 
 > Continuity notes for PM/Dev Lead/Frontend agents between sessions.
 
-- **Last Dev Lead TS lesson**: Day 2 — `Omit` 심화 + non-null assertion(`!`)
+- **Last Dev Lead TS lesson**: Day 3 — 레이어드 아키텍처 실전 (issues 도메인), Prisma default 활용
 - **Frontend Agent last PR**: Day 1 — auth pages (Login, Register) + RTK Query auth slice
-- **PM last ticket issued**: TRACKER-001, TRACKER-002, TRACKER-003
+- **PM last ticket issued**: TRACKER-001, TRACKER-002, TRACKER-003, TRACKER-004
 
 ---
 
@@ -97,7 +104,7 @@
 ### TRACKER-004
 - **Title**: [Issues] 이슈 생성 API
 - **Priority**: HIGH | **SP**: 2
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `POST /api/issues` (인증필요) → 201 + issue
   - creatorId는 JWT에서 자동 설정
