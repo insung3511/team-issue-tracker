@@ -1,22 +1,15 @@
 import { createIssue as createIssueRepo, getIssueById as getIssueByIdRepo, getIssueByUserId as getIssueByUserIdRepo } from "./issues.repository";
-import { Issue } from "../generated/prisma";
+import { Comment, Issue, User } from "../generated/prisma";
 import { CreateIssueData } from "./issues.repository";
 
 export async function createIssue(data: CreateIssueData): Promise<Issue> {
-    return await createIssueRepo({ 
-        title: data.title,
-        priority: data.priority,
-        creatorId: data.creatorId,
-        description: data.description,
-        labels: data.labels,
-        assigneeId: data.assigneeId
-    });
+    return await createIssueRepo(data);
 }
 
-export async function getIssueByUserId(id: number): Promise<Issue[]> {
+export async function getIssueByUserId(id: number): Promise<(Issue & { creator: Pick<User, "id" | "name" | "email"> })[]> {
     return await getIssueByUserIdRepo(id);
 }
 
-export async function getIssueById(id: number): Promise<Issue | null> {
+export async function getIssueById(id: number): Promise<(Issue & { creator: Pick<User, "id" | "name" | "email">, comments: Comment[] }) | null> {
     return await getIssueByIdRepo(id);
 }
