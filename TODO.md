@@ -50,16 +50,16 @@
 - [x] 🔴 보안 수정: `include: { creator: true }` → `select`로 password 노출 방지
 - [ ] `auth.middleware.ts:5` — `JWT_SECRET` 타입 가드 추가 (미반영, 추후 처리)
 
-## 📌 Day 5 — TRACKER-007 진행 중
+## ✅ Day 5 — TRACKER-007 완료
 
-- [ ] TRACKER-007: 이슈 수정/삭제 API
-  - [ ] `PATCH /api/issues/:id` → 200 (부분 수정: title, description, priority 등)
-  - [ ] `DELETE /api/issues/:id` → 204 (작성자만 삭제 가능)
-  - [ ] 타인 삭제 시도 → 403 Forbidden
-  - [ ] Zod schema: 수정용 `.partial()` 활용
-  - [ ] 권한 체크: `req.userId === issue.creatorId`
-- [ ] TS 패턴: Discriminated Union (성공/실패 구분 유니온 타입)
-- [ ] Frontend: 이슈 목록/상세/생성 페이지 + 수정/삭제 (서준)
+- [x] TRACKER-007: 이슈 수정/삭제 API
+  - [x] `PATCH /api/issues/:id` → 200 (부분 수정: title, description, priority 등)
+  - [x] `DELETE /api/issues/:id` → 204 (작성자만 삭제 가능)
+  - [x] 타인 삭제/수정 시도 → 403 Forbidden
+  - [x] Zod schema: 수정용 `.partial()` (`issueUpdateSchema`)
+  - [x] 권한 체크: `req.userId === issue.creatorId`
+  - [x] HTTP 상태코드 정리 (400/403/404)
+- [x] TS 패턴: `.partial()` — Zod schema에서 모든 필드를 optional로 변환
 
 ## 🔜 Upcoming
 - [ ] TRACKER-008: 상태 전이 규칙 (Day 6)
