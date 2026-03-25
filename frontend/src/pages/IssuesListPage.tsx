@@ -1,0 +1,114 @@
+import { Link } from 'react-router-dom';
+import { useGetIssuesQuery } from '../store/issuesApi';
+import type { IssueStatus, Priority } from '../types';
+
+const statusColors: Record<IssueStatus, string> = {
+  BACKLOG: '#888',
+  TODO: '#2563eb',
+  IN_PROGRESS: '#ea580c',
+  IN_REVIEW: '#7c3aed',
+  DONE: '#16a34a',
+};
+
+const priorityColors: Record<Priority, string> = {
+  LOW: '#888',
+  MEDIUM: '#2563eb',
+  HIGH: '#ea580c',
+  URGENT: '#dc2626',
+};
+
+function Badge({ label, color }: { label: string; color: string }) {
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '2px 8px',
+        borderRadius: 4,
+        fontSize: 12,
+        fontWeight: 600,
+        color: '#fff',
+        backgroundColor: color,
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString();
+}
+
+export default function IssuesListPage() {
+  const { data, isLoading, error } = useGetIssuesQuery();
+
+  if (isLoading) {
+    return <p>Loading issues…</p>;
+  }
+
+  if (error) {
+    return <p style={{ color: 'red' }}>Failed to load issues.</p>;
+  }
+
+  const issues = data?.data ?? [];
+
+  return (
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h1 style={{ margin: 0 }}>Issues</h1>
+        <Link
+          to="/issues/new"
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#111',
+            color: '#fff',
+            textDecoration: 'none',
+            borderRadius: 4,
+            fontSize: 14,
+          }}
+        >
+          Create Issue
+        </Link>
+      </div>
+
+      {issues.length === 0 ? (
+        <p style={{ color: '#888' }}>No issues yet. Create one to get started.</p>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid #ddd', textAlign: 'left' }}>
+              <th style={{ padding: '8px 4px' }}>Title</th>
+              <th style={{ padding: '8px 4px' }}>Status</th>
+              <th style={{ padding: '8px 4px' }}>Priority</th>
+              <th style={{ padding: '8px 4px' }}>Creator</th>
+              <th style={{ padding: '8px 4px' }}>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {issues.map((issue) => (
+              <tr key={issue.id} style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '8px 4px' }}>
+                  <Link to={`/issues/${issue.id}`} style={{ color: '#111', textDecoration: 'none', fontWeight: 500 }}>
+                    {issue.title}
+                  </Link>
+                </td>
+                <td style={{ padding: '8px 4px' }}>
+                  <Badge label={issue.status} color={statusColors[issue.status]} />
+                </td>
+                <td style={{ padding: '8px 4px' }}>
+                  <Badge label={issue.priority} color={priorityColors[issue.priority]} />
+                </td>
+                <td style={{ padding: '8px 4px', color: '#555', fontSize: 14 }}>
+                  {issue.creator?.name ?? '—'}
+                </td>
+                <td style={{ padding: '8px 4px', color: '#555', fontSize: 14 }}>
+                  {formatDate(issue.createdAt)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}

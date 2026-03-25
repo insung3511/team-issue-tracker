@@ -1,22 +1,25 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-
-function HomePage() {
-  return (
-    <div>
-      <h1>Team Issue Tracker</h1>
-      <p>Welcome! You are logged in.</p>
-    </div>
-  );
-}
+import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
+import IssuesListPage from './pages/IssuesListPage';
+import CreateIssuePage from './pages/CreateIssuePage';
+import IssueDetailPage from './pages/IssueDetailPage';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<Layout />}>
+          <Route path="/issues" element={<IssuesListPage />} />
+          <Route path="/issues/new" element={<CreateIssuePage />} />
+          <Route path="/issues/:id" element={<IssueDetailPage />} />
+        </Route>
+      </Route>
+      <Route path="*" element={<Navigate to="/issues" replace />} />
     </Routes>
   );
 }

@@ -1,8 +1,8 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 3/14
-- **Date**: 2026-03-23
+- **Day**: 5/14
+- **Date**: 2026-03-24
 - **Sprint Status**: on_track
 
 ---
@@ -14,6 +14,16 @@
 > - **Yesterday**: [what was done]
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
+
+### Day 5 — 2026-03-24
+- **Yesterday**: TRACKER-005/006 코드 리뷰 피드백 반영 (보안: password 노출 수정, AppError 통일, 리턴 타입 정리)
+- **Today**: TRACKER-007 이슈 수정/삭제 API + Zod `.partial()` + Frontend issues 페이지 전체 구현
+- **Blockers**: None
+
+### Day 4 — 2026-03-24
+- **Yesterday**: TRACKER-004 이슈 생성 API 완료
+- **Today**: TRACKER-005 이슈 목록 + TRACKER-006 이슈 상세 + 코드 리뷰 피드백 반영 (Pick, select, try/catch 통일)
+- **Blockers**: None
 
 ### Day 3 — 2026-03-23
 - **Yesterday**: TRACKER-003 authenticate 미들웨어 + GET /api/auth/me 완료
@@ -38,7 +48,9 @@
 |-----|---------|--------------|-------|
 | 1 | `Omit<T, K>` | `auth.service.ts` | `Omit<User, 'password'>` + destructuring으로 password 제거 |
 | 2 | `Omit` 심화 | `auth.service.ts` | `SafeUser` 타입을 getMe에서 재사용 + non-null assertion(`!`) 학습 |
-| 3 | Generics (`ApiResponse<T>`) 예정 | `issues/` | 레이어드 아키텍처 실전 적용 (routes→controller→service→repository) |
+| 3 | Generics (`ApiResponse<T>`) | `issues/` | 레이어드 아키텍처 실전 적용 (routes→controller→service→repository) |
+| 4 | `Pick<T, K>` | `issues.repository.ts` | `Pick<User, "id" \| "name" \| "email">` — Prisma `select`와 조합하여 password 제외 |
+| 5 | `.partial()` (Zod) | `issue.schema.ts` | `issueSchema.partial()`로 수정용 schema 생성, 모든 필드 optional 변환 |
 
 ---
 
@@ -46,7 +58,7 @@
 
 | PR # | Title | Key Pattern | 3-Line Summary |
 |------|-------|-------------|----------------|
-| — | — | — | (fill after each review) |
+| — | Day 5: Frontend issues 전체 구현 | RTK Query `injectEndpoints`, `ProtectedRoute` | auth guard + Layout 네비게이션 + 이슈 CRUD 5페이지. 태훈 리뷰: 에러 key 불일치, Badge 중복, status PATCH 미지원, null/undefined 이슈 4건 |
 
 ---
 
@@ -58,6 +70,9 @@
 | TRACKER-002 | [Auth] 로그인 API 구현 | Day 1 |
 | TRACKER-003 | [Auth] authenticate 미들웨어 | Day 2 |
 | TRACKER-004 | [Issues] 이슈 생성 API | Day 3 |
+| TRACKER-005 | [Issues] 이슈 목록 조회 API | Day 4 |
+| TRACKER-006 | [Issues] 이슈 상세 조회 API | Day 4 |
+| TRACKER-007 | [Issues] 이슈 수정/삭제 API | Day 5 |
 
 ---
 
@@ -65,9 +80,10 @@
 
 > Continuity notes for PM/Dev Lead/Frontend agents between sessions.
 
-- **Last Dev Lead TS lesson**: Day 3 — 레이어드 아키텍처 실전 (issues 도메인), Prisma default 활용
-- **Frontend Agent last PR**: Day 1 — auth pages (Login, Register) + RTK Query auth slice
-- **PM last ticket issued**: TRACKER-001, TRACKER-002, TRACKER-003, TRACKER-004
+- **Last Dev Lead TS lesson**: Day 5 — `.partial()` (Zod), `Pick` vs `Omit` 차이, Prisma `select` + TS 타입 일치
+- **Frontend Agent last work**: Day 5 — ProtectedRoute, Layout, IssuesListPage, IssueDetailPage, CreateIssuePage, issuesApi (RTK Query)
+- **PM last ticket issued**: TRACKER-001 ~ TRACKER-007
+- **Frontend review feedback pending**: 에러 key 불일치(`message`→`error`), status 수정 미작동, Badge 중복, null vs undefined
 
 ---
 
@@ -113,7 +129,7 @@
 ### TRACKER-005
 - **Title**: [Issues] 이슈 목록 조회 API
 - **Priority**: HIGH | **SP**: 1
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `GET /api/issues` (인증필요) → 200 + array (최신순)
   - 인증 없으면 401
@@ -121,7 +137,7 @@
 ### TRACKER-006
 - **Title**: [Issues] 이슈 상세 조회 API
 - **Priority**: HIGH | **SP**: 1
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `GET /api/issues/:id` → 200 + issue + comments
   - 없는 이슈 → 404
@@ -129,7 +145,7 @@
 ### TRACKER-007
 - **Title**: [Issues] 이슈 수정/삭제 API
 - **Priority**: HIGH | **SP**: 2
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `PATCH /api/issues/:id` → 200 (부분 수정)
   - `DELETE /api/issues/:id` → 204 (작성자만)
