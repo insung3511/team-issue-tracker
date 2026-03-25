@@ -26,58 +26,45 @@
 - [x] 레이어드 아키텍처 실전: issues 도메인 (routes→controller→service→repository)
 - [ ] Frontend: 이슈 생성 페이지 + RTK Query issues slice (서준) — 진행 예정
 
-## ✅ Day 3 — TRACKER-005, 006 구현 완료 (리뷰 피드백 반영 필요)
+## ✅ Day 4 — TRACKER-005, 006 구현 + 코드 리뷰 피드백 반영 완료
 
 - [x] TRACKER-005: 이슈 목록 조회 API (`GET /api/issues`)
 - [x] TRACKER-006: 이슈 상세 조회 API (`GET /api/issues/:id`)
-- [ ] ⬇️ 아래 코드 리뷰 피드백 반영 필요
+- [x] TS 패턴: `Pick<T, K>` — creator에서 password 제외한 안전한 타입 (`Pick<User, "id" | "name" | "email">`)
+- [x] 코드 리뷰 피드백 반영 (아래 상세)
+
+## ✅ 코드 리뷰 피드백 — TRACKER-005/006 (리뷰어: 태훈, 하은)
+
+### CRITICAL
+- [x] `issues.repository.ts` — `orderBy: { createdAt: 'desc' }` 추가 (최신순 정렬)
+
+### SHOULD FIX
+- [x] `issues.controller.ts` — 에러 처리를 `AppError`로 통일
+- [x] `issues.controller.ts` — 에러 응답 키 통일 (`AppError` 통일로 자동 해결)
+- [x] `issues.controller.ts` — `parseInt(id, 10)` 중복 호출 제거
+- [x] `issues.repository.ts` + `issues.service.ts` — 리턴 타입 수정 (`Issue & { creator: Pick<User, ...> }`)
+- [x] `issues.controller.ts` — IIFE → `try/catch` + `next(error)` 패턴 통일
+
+### NICE TO HAVE
+- [x] `issues.repository.ts` — 목록 API에 creator `select` 추가 (password 제외)
+- [x] 🔴 보안 수정: `include: { creator: true }` → `select`로 password 노출 방지
+- [ ] `auth.middleware.ts:5` — `JWT_SECRET` 타입 가드 추가 (미반영, 추후 처리)
+
+## 📌 Day 5 — TRACKER-007 진행 중
+
+- [ ] TRACKER-007: 이슈 수정/삭제 API
+  - [ ] `PATCH /api/issues/:id` → 200 (부분 수정: title, description, priority 등)
+  - [ ] `DELETE /api/issues/:id` → 204 (작성자만 삭제 가능)
+  - [ ] 타인 삭제 시도 → 403 Forbidden
+  - [ ] Zod schema: 수정용 `.partial()` 활용
+  - [ ] 권한 체크: `req.userId === issue.creatorId`
+- [ ] TS 패턴: Discriminated Union (성공/실패 구분 유니온 타입)
+- [ ] Frontend: 이슈 목록/상세/생성 페이지 + 수정/삭제 (서준)
 
 ## 🔜 Upcoming
-- [ ] TRACKER-007: 이슈 수정/삭제 API (Day 5)
 - [ ] TRACKER-008: 상태 전이 규칙 (Day 6)
 - [ ] TRACKER-009: 댓글 CRUD (Day 8)
 - [ ] TRACKER-010: 필터링 + 페이지네이션 (Day 9)
-
-## 🔴 코드 리뷰 피드백 — TRACKER-005/006 (리뷰어: 태훈, 하은)
-
-### CRITICAL (AC 미충족 — 반드시 수정)
-
-- [ ] `issues.repository.ts` — `getIssueByUserId()`: `orderBy: { createdAt: 'desc' }` 추가
-  - TRACKER-005 AC: "최신순" 정렬인데, 현재 정렬 없음 (DB 기본 순서로 나감)
-
-### SHOULD FIX (일관성/타입 안전성)
-
-- [ ] `issues.controller.ts` — 에러 처리를 `AppError`로 통일
-  - 현재: 400/404를 `res.status().json()` 수동 응답
-  - 개선: `throw new AppError(400, "Invalid issue ID")` 사용 → `errorHandler`에서 처리
-  - 이유: auth 쪽은 `AppError` 쓰는데 issues만 수동. 통일 필요
-
-- [ ] `issues.controller.ts` — 에러 응답 키 통일 (`error` vs `message`)
-  - `errorHandler.ts` → `{ success: false, error: "..." }`
-  - 컨트롤러 수동 → `{ success: false, message: "..." }`
-  - 프론트에서 파싱할 때 혼란 생김. `AppError` 통일하면 자동 해결
-
-- [ ] `issues.controller.ts` — `parseInt(id, 10)` 중복 호출 (line 25, 28)
-  - 한 번만 파싱해서 변수에 저장
-
-- [ ] `issues.repository.ts` + `issues.service.ts` — `getIssueById` 리턴 타입 수정
-  - 현재: `Promise<Issue | null>` (relations 미포함)
-  - 실제: `include: { creator, comments }` → `Issue & { creator: User, comments: Comment[] }`
-  - Prisma 타입 유틸 쓰거나 별도 타입 정의 필요
-
-- [ ] `issues.controller.ts` — 에러 핸들링 패턴 통일
-  - auth: `try/catch` + `next(error)`
-  - issues: IIFE `(async () => {...})().catch(next)`
-  - 한 가지로 통일할 것
-
-### NICE TO HAVE (개선사항)
-
-- [ ] `issues.repository.ts` — 목록 API에 `include: { creator: true }` 추가
-  - 프론트에서 목록 화면에 작성자 이름 표시하려면 필요 (현재 creatorId만 내려감)
-
-- [ ] `auth.middleware.ts:5` — `JWT_SECRET` 타입 가드 추가
-  - 현재: `const JWT_SECRET: string = process.env.JWT_SECRET` (string | undefined → string 직접 할당)
-  - 개선: 환경변수 존재 검증 후 할당, 또는 startup 시 검증
 
 ## ⚠️ 잔여 이슈
 

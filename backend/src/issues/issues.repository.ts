@@ -59,3 +59,22 @@ export async function getIssueById(issueId: number): Promise<(Issue & { creator:
         }
     });
 }
+
+export async function deleteIssue(issueId: number): Promise<void> {
+    await prisma.issue.delete({
+        where: { id: issueId },
+    });
+}
+
+export async function updateIssue(issueId: number, data: Partial<CreateIssueData>): Promise<Issue> {
+    return await prisma.issue.update({
+        where: { id: issueId },
+        data: {
+            title: data.title,
+            description: data.description,
+            priority: data.priority,
+            labels: data.labels,
+            assigneeId: data.assigneeId,
+        },
+    });
+}

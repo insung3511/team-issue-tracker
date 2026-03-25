@@ -7,5 +7,7 @@ export const issueSchema = z.object({
     labels: z.array(z.string()).optional(),
     assigneeId: z.number().optional(),
 })
+export const issueUpdateSchema = issueSchema.partial();
 
 export type IssueInput = z.infer<typeof issueSchema>;
+export type IssueUpdateInput = z.infer<typeof issueUpdateSchema>;
