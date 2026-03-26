@@ -76,16 +76,16 @@
   - [x] "Change Status" 버튼 + 폼 추가
   - [x] 에러 처리 `message` → `error` 수정
 
-## 📌 Day 7 — TRACKER-009 댓글 CRUD + TS 복습
+## ✅ Day 7 — TRACKER-009 댓글 CRUD 완료
 
-- [ ] TRACKER-009: 댓글 CRUD API
-  - [ ] `POST /api/issues/:id/comments` → 201
-  - [ ] `GET /api/issues/:id/comments` → 200 + array
-  - [ ] `PATCH /api/comments/:id` → 200 (작성자만)
-  - [ ] `DELETE /api/comments/:id` → 204 (작성자만)
-  - [ ] comments 모듈 생성 (controller, service, repository, routes)
-- [ ] TS 패턴 복습: Week 1 패턴 전체 점검
-  - [ ] `Omit<T, K>`, Generics, Type Guard, Discriminated Union, `Record<K, V>`
+- [x] TRACKER-009: 댓글 CRUD API
+  - [x] `POST /api/issues/:issueId/comments` → 201
+  - [x] `GET /api/issues/:issueId/comments` → 200 + array
+  - [x] `PATCH /api/comments/:commentId` → 200 (작성자만)
+  - [x] `DELETE /api/comments/:commentId` → 204 (작성자만)
+  - [x] comments 모듈 생성 (controller, service, repository, routes)
+  - [x] Zod 검증 + 권한 체크
+- [ ] TS 패턴 복습: Week 1 패턴 전체 점검 (선택)
 - [ ] Frontend: 댓글 UI (서준)
 
 ## 🔜 Upcoming

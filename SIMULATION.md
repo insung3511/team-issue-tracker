@@ -80,6 +80,7 @@
 | TRACKER-006 | [Issues] 이슈 상세 조회 API | Day 4 |
 | TRACKER-007 | [Issues] 이슈 수정/삭제 API | Day 5 |
 | TRACKER-008 | [Issues] 상태 전이 규칙 구현 | Day 6 |
+| TRACKER-009 | [Comments] 댓글 CRUD API | Day 7 |
 
 ---
 
@@ -171,12 +172,12 @@
 ### TRACKER-009
 - **Title**: [Comments] 댓글 CRUD API
 - **Priority**: MEDIUM | **SP**: 2
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
-  - `POST /api/issues/:id/comments` → 201
-  - `GET /api/issues/:id/comments` → 200 + array
-  - `PATCH /api/comments/:id` → 200 (작성자만)
-  - `DELETE /api/comments/:id` → 204 (작성자만)
+  - `POST /api/issues/:issueId/comments` → 201
+  - `GET /api/issues/:issueId/comments` → 200 + array
+  - `PATCH /api/comments/:commentId` → 200 (작성자만)
+  - `DELETE /api/comments/:commentId` → 204 (작성자만)
 
 ### TRACKER-010
 - **Title**: [Issues] 필터링 + 페이지네이션
