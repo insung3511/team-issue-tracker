@@ -78,3 +78,12 @@ export async function updateIssue(issueId: number, data: Partial<CreateIssueData
         },
     });
 }
+
+export async function updateIssueStatus(issueId: number, status: Issue["status"]): Promise<Issue> {
+    return await prisma.issue.update({
+        where: { id: issueId },
+        data: {
+            status,
+        },
+    });
+}

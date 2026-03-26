@@ -1,5 +1,5 @@
 import { baseApi } from './api';
-import type { ApiResponse, Issue, Priority } from '../types';
+import type { ApiResponse, Issue, Priority, IssueStatus } from '../types';
 
 export const issuesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,6 +33,17 @@ export const issuesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Issue'],
     }),
+    updateIssueStatus: builder.mutation<
+      ApiResponse<Issue>,
+      { id: number; status: IssueStatus }
+    >({
+      query: ({ id, status }) => ({
+        url: `/issues/${id}/status`,
+        method: 'PATCH',
+        body: { status },
+      }),
+      invalidatesTags: ['Issue'],
+    }),
     deleteIssue: builder.mutation<void, number>({
       query: (id) => ({
         url: `/issues/${id}`,
@@ -48,5 +59,6 @@ export const {
   useGetIssueByIdQuery,
   useCreateIssueMutation,
   useUpdateIssueMutation,
+  useUpdateIssueStatusMutation,
   useDeleteIssueMutation,
 } = issuesApi;

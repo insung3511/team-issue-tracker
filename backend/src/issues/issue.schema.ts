@@ -8,6 +8,9 @@ export const issueSchema = z.object({
     assigneeId: z.number().optional(),
 })
 export const issueUpdateSchema = issueSchema.partial();
+export const issueStatusUpdateSchema = z.object({
+    status: z.enum(["BACKLOG", "TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"])
+});
 
 export type IssueInput = z.infer<typeof issueSchema>;
 export type IssueUpdateInput = z.infer<typeof issueUpdateSchema>;

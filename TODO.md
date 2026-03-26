@@ -61,8 +61,22 @@
   - [x] HTTP 상태코드 정리 (400/403/404)
 - [x] TS 패턴: `.partial()` — Zod schema에서 모든 필드를 optional로 변환
 
+## 📌 Day 6 — TRACKER-008 상태 전이 규칙
+
+- [x] TRACKER-008: 상태 전이 규칙 구현
+  - [x] `PATCH /api/issues/:id/status` → 200
+  - [x] 허용되지 않은 전이 → 400 + allowed 목록 (`AppError.info`로 구조화)
+  - [x] 전이 규칙: BACKLOG→TODO→IN_PROGRESS→IN_REVIEW→DONE (reopen: DONE→IN_PROGRESS)
+  - [x] `Record<Issue["status"], Issue["status"][]>` 전이 맵 (service layer)
+  - [x] `issueStatusUpdateSchema` Zod 검증 추가
+  - [x] `AppError`에 `info?: Record<string, unknown>` 확장
+- [x] TS 패턴: `Record<K, V>` — 상태→허용상태 매핑 객체 타입
+- [x] Frontend: 상태 변경 UI + 전이 실패 에러 처리 (서준)
+  - [x] `useUpdateIssueStatusMutation` 추가
+  - [x] "Change Status" 버튼 + 폼 추가
+  - [x] 에러 처리 `message` → `error` 수정
+
 ## 🔜 Upcoming
-- [ ] TRACKER-008: 상태 전이 규칙 (Day 6)
 - [ ] TRACKER-009: 댓글 CRUD (Day 8)
 - [ ] TRACKER-010: 필터링 + 페이지네이션 (Day 9)
 

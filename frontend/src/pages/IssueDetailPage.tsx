@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-import { useGetIssueByIdQuery, useUpdateIssueMutation, useDeleteIssueMutation } from '../store/issuesApi';
+import { useGetIssueByIdQuery, useUpdateIssueMutation, useUpdateIssueStatusMutation, useDeleteIssueMutation } from '../store/issuesApi';
 import type { IssueStatus, Priority } from '../types';
 
 const statusColors: Record<IssueStatus, string> = {
@@ -53,9 +53,13 @@ export default function IssueDetailPage() {
   const issueId = Number(id);
   const { data, isLoading, error } = useGetIssueByIdQuery(issueId);
   const [updateIssue, { isLoading: isUpdating }] = useUpdateIssueMutation();
+  const [updateIssueStatus, { isLoading: isStatusUpdating }] = useUpdateIssueStatusMutation();
   const [deleteIssue, { isLoading: isDeleting }] = useDeleteIssueMutation();
 
   const [editing, setEditing] = useState(false);
+  const [changingStatus, setChangingStatus] = useState(false);
+  const [newStatus, setNewStatus] = useState<IssueStatus>('BACKLOG');
+  const [statusError, setStatusError] = useState('');
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
   const [editStatus, setEditStatus] = useState<IssueStatus>('BACKLOG');
@@ -72,6 +76,29 @@ export default function IssueDetailPage() {
 
   const issue = data.data;
   const isCreator = user?.id === issue.creatorId;
+
+  const handleStatusChange = async (newStatusValue: IssueStatus) => {
+    if (!issue) return;
+    setStatusError('');
+    try {
+      await updateIssueStatus({ id: issue.id, status: newStatusValue }).unwrap();
+      setChangingStatus(false);
+    } catch (err) {
+      const msg =
+        err && typeof err === 'object' && 'data' in err
+          ? (err as { data: { error?: string; info?: { allowedTransitions?: string[] } } }).data.error
+          : undefined;
+      setStatusError(msg ?? 'Status change failed.');
+    }
+  };
+
+  const startStatusChange = () => {
+    if (issue) {
+      setNewStatus(issue.status);
+    }
+    setChangingStatus(true);
+    setStatusError('');
+  };
 
   const startEditing = () => {
     setEditTitle(issue.title);
@@ -99,7 +126,7 @@ export default function IssueDetailPage() {
     } catch (err) {
       const msg =
         err && typeof err === 'object' && 'data' in err
-          ? (err as { data: { message?: string } }).data.message
+          ? (err as { data: { error?: string; info?: { allowedTransitions?: string[] } } }).data.error
           : undefined;
       setEditError(msg ?? 'Update failed.');
     }
@@ -211,10 +238,58 @@ export default function IssueDetailPage() {
             )}
           </div>
 
-          <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center' }}>
             <Badge label={issue.status} color={statusColors[issue.status]} />
             <Badge label={issue.priority} color={priorityColors[issue.priority]} />
+            {isCreator && !changingStatus && (
+              <button
+                onClick={startStatusChange}
+                style={{
+                  padding: '4px 10px',
+                  fontSize: 12,
+                  cursor: 'pointer',
+                  border: '1px solid #ccc',
+                  borderRadius: 4,
+                  backgroundColor: '#fff',
+                }}
+              >
+                Change Status
+              </button>
+            )}
           </div>
+
+          {changingStatus && (
+            <div style={{ marginBottom: 16, padding: 12, backgroundColor: '#f5f5f5', borderRadius: 4 }}>
+              <p style={{ margin: '0 0 8px', fontWeight: 500 }}>Change Status</p>
+              <select
+                value={newStatus}
+                onChange={(e) => setNewStatus(e.target.value as IssueStatus)}
+                style={{ marginRight: 8, padding: 4 }}
+              >
+                {allStatuses.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+              <button
+                onClick={() => handleStatusChange(newStatus)}
+                disabled={isStatusUpdating || newStatus === issue.status}
+                style={{ marginRight: 4, padding: '4px 10px', cursor: 'pointer' }}
+              >
+                {isStatusUpdating ? 'Saving...' : 'Save'}
+              </button>
+              <button
+                onClick={() => setChangingStatus(false)}
+                style={{ padding: '4px 10px', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              {statusError && (
+                <p style={{ color: '#dc2626', fontSize: 13, marginTop: 8, marginBottom: 0 }}>
+                  {statusError}
+                </p>
+              )}
+            </div>
+          )}
 
           <div style={{ marginBottom: 16, lineHeight: 1.6, color: '#333' }}>
             {issue.description ?? <span style={{ color: '#aaa', fontStyle: 'italic' }}>No description.</span>}

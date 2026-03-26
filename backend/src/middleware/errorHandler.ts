@@ -11,9 +11,12 @@ export function errorHandler(
     res.status(err.statusCode).json({
       success: false,
       error: err.message,
+      ...(err.info && { info: err.info }), 
     });
     return;
   }
+
+  
 
   const isDev = process.env.NODE_ENV === 'development';
   res.status(500).json({

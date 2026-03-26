@@ -1,8 +1,8 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 5/14
-- **Date**: 2026-03-24
+- **Day**: 6/14
+- **Date**: 2026-03-25
 - **Sprint Status**: on_track
 
 ---
@@ -14,6 +14,11 @@
 > - **Yesterday**: [what was done]
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
+
+### Day 6 — 2026-03-25
+- **Yesterday**: TRACKER-007 이슈 수정/삭제 API 완료 + Zod `.partial()` + Frontend issues 페이지 전체 구현
+- **Today**: TRACKER-008 상태 전이 규칙 구현 + `Record<K, V>` TS 패턴 + Frontend 상태 변경 UI
+- **Blockers**: None
 
 ### Day 5 — 2026-03-24
 - **Yesterday**: TRACKER-005/006 코드 리뷰 피드백 반영 (보안: password 노출 수정, AppError 통일, 리턴 타입 정리)
@@ -51,6 +56,7 @@
 | 3 | Generics (`ApiResponse<T>`) | `issues/` | 레이어드 아키텍처 실전 적용 (routes→controller→service→repository) |
 | 4 | `Pick<T, K>` | `issues.repository.ts` | `Pick<User, "id" \| "name" \| "email">` — Prisma `select`와 조합하여 password 제외 |
 | 5 | `.partial()` (Zod) | `issue.schema.ts` | `issueSchema.partial()`로 수정용 schema 생성, 모든 필드 optional 변환 |
+| 6 | `Record<K, V>` | `issues.service.ts` | `Record<Issue["status"], Issue["status"][]>` — 상태 전이 맵 + 스프레드 연산자(`...`), `AppError` 확장 |
 
 ---
 
@@ -73,6 +79,7 @@
 | TRACKER-005 | [Issues] 이슈 목록 조회 API | Day 4 |
 | TRACKER-006 | [Issues] 이슈 상세 조회 API | Day 4 |
 | TRACKER-007 | [Issues] 이슈 수정/삭제 API | Day 5 |
+| TRACKER-008 | [Issues] 상태 전이 규칙 구현 | Day 6 |
 
 ---
 
@@ -80,9 +87,10 @@
 
 > Continuity notes for PM/Dev Lead/Frontend agents between sessions.
 
-- **Last Dev Lead TS lesson**: Day 5 — `.partial()` (Zod), `Pick` vs `Omit` 차이, Prisma `select` + TS 타입 일치
+- **Last Dev Lead TS lesson (현우)**: Day 5 — `.partial()` (Zod), `Pick` vs `Omit` 차이, Prisma `select` + TS 타입 일치
 - **Frontend Agent last work**: Day 5 — ProtectedRoute, Layout, IssuesListPage, IssueDetailPage, CreateIssuePage, issuesApi (RTK Query)
 - **PM last ticket issued**: TRACKER-001 ~ TRACKER-007
+- **Dev Lead**: 현우 (Day 6~, 태훈 → 현우 교체)
 - **Frontend review feedback pending**: 에러 key 불일치(`message`→`error`), status 수정 미작동, Badge 중복, null vs undefined
 
 ---
@@ -154,7 +162,7 @@
 ### TRACKER-008
 - **Title**: [Issues] 상태 전이 규칙 구현
 - **Priority**: HIGH | **SP**: 3
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `PATCH /api/issues/:id/status` → 200
   - 허용되지 않은 전이 → 400 + allowed 목록
