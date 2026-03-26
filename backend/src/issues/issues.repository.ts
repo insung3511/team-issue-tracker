@@ -18,7 +18,7 @@ export async function createIssue(data: CreateIssueData): Promise<Issue> {
             priority: data.priority,
             creatorId: data.creatorId,
             labels: data.labels,
-            assigneeId: data.assigneeId ,
+            assigneeId: data.assigneeId,
         },
     });
 }

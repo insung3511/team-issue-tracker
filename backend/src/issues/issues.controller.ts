@@ -100,7 +100,6 @@ export async function updateIssue(req: Request<{ id: string }>, res: Response, n
 
 export async function updateIssueStatus(req: Request<{ id: string }>, res: Response, next: NextFunction) {
     try {
-        // Validate issue ID
         const id = req.params.id;
         const issueId = parseInt(id, 10);
         if (isNaN(issueId)) {
