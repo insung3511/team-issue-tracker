@@ -1,8 +1,8 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 6/14
-- **Date**: 2026-03-25
+- **Day**: 9/14
+- **Date**: 2026-03-30
 - **Sprint Status**: on_track
 
 ---
@@ -14,6 +14,21 @@
 > - **Yesterday**: [what was done]
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
+
+### Day 9 — 2026-03-30
+- **Yesterday**: TRACKER-010 필터링 + 페이지네이션 완료
+- **Today**: TRACKER-011 Swagger 문서화 (JSDoc 주석) + `Readonly` / `as const` TS 패턴
+- **Blockers**: None
+
+### Day 8 — 2026-03-29
+- **Yesterday**: TRACKER-009 댓글 CRUD API 완료 (comments 모듈 전체 구현)
+- **Today**: TRACKER-010 필터링 + 페이지네이션 + `Pick` + `Partial` TS 패턴 + Frontend 필터/페이지네이션 UI
+- **Blockers**: None
+
+### Day 7 — 2026-03-27
+- **Yesterday**: TRACKER-008 상태 전이 규칙 완료 + `Record<K, V>` TS 패턴 + Frontend 상태 변경 UI
+- **Today**: TRACKER-009 댓글 CRUD API + Week 1 패턴 복습
+- **Blockers**: None
 
 ### Day 6 — 2026-03-25
 - **Yesterday**: TRACKER-007 이슈 수정/삭제 API 완료 + Zod `.partial()` + Frontend issues 페이지 전체 구현
@@ -57,6 +72,8 @@
 | 4 | `Pick<T, K>` | `issues.repository.ts` | `Pick<User, "id" \| "name" \| "email">` — Prisma `select`와 조합하여 password 제외 |
 | 5 | `.partial()` (Zod) | `issue.schema.ts` | `issueSchema.partial()`로 수정용 schema 생성, 모든 필드 optional 변환 |
 | 6 | `Record<K, V>` | `issues.service.ts` | `Record<Issue["status"], Issue["status"][]>` — 상태 전이 맵 + 스프레드 연산자(`...`), `AppError` 확장 |
+| 7 | 복습 | — | Week 1 패턴 전체 점검 |
+| 8 | `Pick` + `Partial` | `issue.schema.ts`, `issues.repository.ts` | 필터 쿼리 파라미터 타입 설계 + `Prisma.IssueWhereInput` 동적 where 구성 |
 
 ---
 
@@ -81,6 +98,8 @@
 | TRACKER-007 | [Issues] 이슈 수정/삭제 API | Day 5 |
 | TRACKER-008 | [Issues] 상태 전이 규칙 구현 | Day 6 |
 | TRACKER-009 | [Comments] 댓글 CRUD API | Day 7 |
+| TRACKER-010 | [Issues] 필터링 + 페이지네이션 | Day 8 |
+| TRACKER-011 | [Docs] Swagger 문서화 | Day 9 |
 
 ---
 
@@ -88,9 +107,9 @@
 
 > Continuity notes for PM/Dev Lead/Frontend agents between sessions.
 
-- **Last Dev Lead TS lesson (현우)**: Day 5 — `.partial()` (Zod), `Pick` vs `Omit` 차이, Prisma `select` + TS 타입 일치
-- **Frontend Agent last work**: Day 5 — ProtectedRoute, Layout, IssuesListPage, IssueDetailPage, CreateIssuePage, issuesApi (RTK Query)
-- **PM last ticket issued**: TRACKER-001 ~ TRACKER-007
+- **Last Dev Lead TS lesson (현우)**: Day 6 — `Record<K, V>` 상태 전이 맵, `AppError` 확장 (`info` 필드)
+- **Frontend Agent last work**: Day 8 — 댓글 CRUD UI (commentsApi + IssueDetailPage 수정) + 필터/페이지네이션 UI (issuesApi 쿼리 파라미터 + IssuesListPage 필터/페이지네이션 컨트롤)
+- **PM last ticket issued**: TRACKER-001 ~ TRACKER-011
 - **Dev Lead**: 현우 (Day 6~, 태훈 → 현우 교체)
 - **Frontend review feedback pending**: 에러 key 불일치(`message`→`error`), status 수정 미작동, Badge 중복, null vs undefined
 
@@ -182,7 +201,7 @@
 ### TRACKER-010
 - **Title**: [Issues] 필터링 + 페이지네이션
 - **Priority**: MEDIUM | **SP**: 3
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `GET /api/issues?status=TODO&priority=HIGH&page=1&limit=10`
   - 응답: `{ data, pagination: { page, limit, total, totalPages } }`
@@ -190,7 +209,7 @@
 ### TRACKER-011
 - **Title**: [Docs] Swagger 문서화 (주요 3개)
 - **Priority**: LOW | **SP**: 2
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `GET /api-docs` → Swagger UI
   - register, issues CRUD, status transition 문서화

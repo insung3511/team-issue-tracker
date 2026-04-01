@@ -61,7 +61,7 @@
   - [x] HTTP 상태코드 정리 (400/403/404)
 - [x] TS 패턴: `.partial()` — Zod schema에서 모든 필드를 optional로 변환
 
-## 📌 Day 6 — TRACKER-008 상태 전이 규칙
+## ✅ Day 6 — TRACKER-008 상태 전이 규칙 완료
 
 - [x] TRACKER-008: 상태 전이 규칙 구현
   - [x] `PATCH /api/issues/:id/status` → 200
@@ -86,10 +86,42 @@
   - [x] comments 모듈 생성 (controller, service, repository, routes)
   - [x] Zod 검증 + 권한 체크
 - [ ] TS 패턴 복습: Week 1 패턴 전체 점검 (선택)
-- [ ] Frontend: 댓글 UI (서준)
+- [x] Frontend: 댓글 CRUD UI (서준)
+  - [x] `commentsApi.ts` 생성 (createComment, updateComment, deleteComment)
+  - [x] IssueDetailPage: 댓글 작성 폼 (textarea + Add Comment 버튼)
+  - [x] IssueDetailPage: 댓글 수정 (인라인 Edit + Save/Cancel)
+  - [x] IssueDetailPage: 댓글 삭제 (confirm 다이얼로그 + 작성자만)
+
+## ✅ Day 8 — TRACKER-010 필터링 + 페이지네이션 완료
+
+- [x] TRACKER-010: 필터링 + 페이지네이션
+  - [x] `GET /api/issues?status=TODO&priority=HIGH&page=1&limit=10`
+  - [x] 응답: `{ data, pagination: { page, limit, total, totalPages } }`
+  - [x] 쿼리 파라미터 Zod 검증 (`issueListQuerySchema`: status, priority, page, limit)
+  - [x] Prisma `where` 필터 + `skip`/`take` 페이지네이션
+  - [x] 기존 `GET /api/issues` 확장 (하위 호환 — 파라미터 없으면 default 적용)
+  - [x] `Promise.all([findMany, count])` 병렬 쿼리
+  - [x] `PaginationMeta`, `PaginatedResponse<T>` 타입 (`types/common.ts`)
+  - [x] `calculatePagination` 유틸 (`lib/pagination.ts`) — 서비스에서 미사용, 리팩토링 시 통일 예정
+- [x] TS 패턴: `Pick` + `Partial` — 필터 쿼리 파라미터 타입 설계
+- [x] Frontend: 필터/페이지네이션 UI (서준)
+  - [x] `issuesApi.ts`: getIssues에 쿼리 파라미터 지원 (status, priority, page, limit)
+  - [x] `issuesApi.ts`: 리턴 타입 `PaginatedResponse<Issue>`로 변경
+  - [x] IssuesListPage: Status/Priority 필터 드롭다운
+  - [x] IssuesListPage: 페이지네이션 컨트롤 (Previous/Next, 페이지 표시, 총 개수) — 작업 예정
+
+## ✅ Day 9 — TRACKER-011 Swagger 문서화 완료
+
+- [x] TRACKER-011: Swagger 문서화 (주요 3개)
+  - [x] `GET /api-docs` → Swagger UI
+  - [x] register, issues CRUD, status transition 문서화
+- [ ] TS 패턴: `Readonly` / `as const` — 상수 객체/배열 수정 방지
 
 ## 🔜 Upcoming
-- [ ] TRACKER-010: 필터링 + 페이지네이션 (Day 8)
+
+- [ ] TRACKER-012: 대시보드 통계 API (Day 10)
+- [ ] TRACKER-013: 통합 테스트 보강 (Day 11-12)
+- [ ] TRACKER-014: 최종 리팩토링 + 회고 (Day 13-14)
 
 ## ⚠️ 잔여 이슈
 
