@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { useGetIssueByIdQuery, useUpdateIssueMutation, useUpdateIssueStatusMutation, useDeleteIssueMutation } from '../store/issuesApi';
+import { useCreateCommentMutation, useUpdateCommentMutation, useDeleteCommentMutation } from '../store/commentsApi';
 import type { IssueStatus, Priority } from '../types';
 
 const statusColors: Record<IssueStatus, string> = {
@@ -56,6 +57,10 @@ export default function IssueDetailPage() {
   const [updateIssueStatus, { isLoading: isStatusUpdating }] = useUpdateIssueStatusMutation();
   const [deleteIssue, { isLoading: isDeleting }] = useDeleteIssueMutation();
 
+  const [createComment, { isLoading: isCreatingComment }] = useCreateCommentMutation();
+  const [updateComment, { isLoading: isUpdatingComment }] = useUpdateCommentMutation();
+  const [deleteComment] = useDeleteCommentMutation();
+
   const [editing, setEditing] = useState(false);
   const [changingStatus, setChangingStatus] = useState(false);
   const [newStatus, setNewStatus] = useState<IssueStatus>('BACKLOG');
@@ -65,6 +70,12 @@ export default function IssueDetailPage() {
   const [editStatus, setEditStatus] = useState<IssueStatus>('BACKLOG');
   const [editPriority, setEditPriority] = useState<Priority>('MEDIUM');
   const [editError, setEditError] = useState('');
+
+  const [commentContent, setCommentContent] = useState('');
+  const [commentError, setCommentError] = useState('');
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editCommentContent, setEditCommentContent] = useState('');
+  const [editCommentError, setEditCommentError] = useState('');
 
   if (isLoading) {
     return <p>Loading issue…</p>;
@@ -308,12 +319,124 @@ export default function IssueDetailPage() {
             ) : (
               issue.comments.map((comment) => (
                 <div key={comment.id} style={{ borderBottom: '1px solid #eee', padding: '12px 0' }}>
-                  <div style={{ fontSize: 13, color: '#888', marginBottom: 4 }}>
-                    <strong>{comment.author?.name ?? 'Unknown'}</strong> · {formatDate(comment.createdAt)}
-                  </div>
-                  <div style={{ fontSize: 14, color: '#333' }}>{comment.content}</div>
+                  {editingCommentId === comment.id ? (
+                    <div>
+                      <textarea
+                        value={editCommentContent}
+                        onChange={(e) => setEditCommentContent(e.target.value)}
+                        rows={3}
+                        style={{ width: '100%', padding: 8, boxSizing: 'border-box' as const, resize: 'vertical' }}
+                      />
+                      {editCommentError && (
+                        <p style={{ color: 'red', margin: '4px 0', fontSize: 13 }}>{editCommentError}</p>
+                      )}
+                      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                        <button
+                          onClick={async () => {
+                            setEditCommentError('');
+                            try {
+                              await updateComment({ commentId: comment.id, content: editCommentContent }).unwrap();
+                              setEditingCommentId(null);
+                              setEditCommentContent('');
+                            } catch (err) {
+                              const msg =
+                                err && typeof err === 'object' && 'data' in err
+                                  ? (err as { data: { error?: string } }).data.error
+                                  : undefined;
+                              setEditCommentError(msg ?? 'Failed to update comment.');
+                            }
+                          }}
+                          disabled={isUpdatingComment || editCommentContent.trim().length < 1}
+                          style={{ padding: '6px 12px', cursor: 'pointer', backgroundColor: '#111', color: '#fff', border: 'none', borderRadius: 4 }}
+                        >
+                          {isUpdatingComment ? 'Saving...' : 'Save'}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingCommentId(null);
+                            setEditCommentContent('');
+                            setEditCommentError('');
+                          }}
+                          style={{ padding: '6px 12px', cursor: 'pointer' }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                        <div style={{ fontSize: 13, color: '#888' }}>
+                          <strong>{comment.author?.name ?? 'Unknown'}</strong> · {formatDate(comment.createdAt)}
+                        </div>
+                        {user?.id === comment.authorId && (
+                          <div style={{ display: 'flex', gap: 8 }}>
+                            <button
+                              onClick={() => {
+                                setEditingCommentId(comment.id);
+                                setEditCommentContent(comment.content);
+                                setEditCommentError('');
+                              }}
+                              style={{ padding: '4px 10px', fontSize: 12, cursor: 'pointer', border: '1px solid #ccc', borderRadius: 4, backgroundColor: '#fff' }}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={async () => {
+                                if (!window.confirm('Are you sure you want to delete this comment?')) return;
+                                try {
+                                  await deleteComment(comment.id).unwrap();
+                                } catch {
+                                  alert('Failed to delete comment.');
+                                }
+                              }}
+                              style={{ padding: '4px 10px', fontSize: 12, cursor: 'pointer', color: '#dc2626', border: '1px solid #dc2626', borderRadius: 4, backgroundColor: '#fff' }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ fontSize: 14, color: '#333' }}>{comment.content}</div>
+                    </div>
+                  )}
                 </div>
               ))
+            )}
+
+            {user && (
+              <div style={{ marginTop: 16, padding: 12, backgroundColor: '#f5f5f5', borderRadius: 4 }}>
+                <p style={{ margin: '0 0 8px', fontWeight: 500 }}>Add Comment</p>
+                <textarea
+                  value={commentContent}
+                  onChange={(e) => setCommentContent(e.target.value)}
+                  placeholder="Write a comment..."
+                  rows={3}
+                  style={{ width: '100%', padding: 8, boxSizing: 'border-box' as const, resize: 'vertical' }}
+                />
+                {commentError && (
+                  <p style={{ color: 'red', margin: '4px 0', fontSize: 13 }}>{commentError}</p>
+                )}
+                <button
+                  onClick={async () => {
+                    setCommentError('');
+                    try {
+                      await createComment({ issueId: issue.id, content: commentContent }).unwrap();
+                      setCommentContent('');
+                    } catch (err) {
+                      const msg =
+                        err && typeof err === 'object' && 'data' in err
+                          ? (err as { data: { error?: string } }).data.error
+                          : undefined;
+                      setCommentError(msg ?? 'Failed to add comment.');
+                    }
+                  }}
+                  disabled={isCreatingComment || commentContent.trim().length < 1}
+                  style={{ marginTop: 8, padding: '6px 12px', cursor: 'pointer', backgroundColor: '#111', color: '#fff', border: 'none', borderRadius: 4 }}
+                >
+                  {isCreatingComment ? 'Adding...' : 'Add Comment'}
+                </button>
+              </div>
             )}
           </div>
         </div>

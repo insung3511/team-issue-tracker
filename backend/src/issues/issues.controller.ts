@@ -2,12 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { 
     createIssue as createIssueService, 
     getIssueById as getIssueByIdService, 
-    getIssueByUserId as getIssueByUserIdService,
     deleteIssue as deleteIssueService,
     updateIssue as updateIssueService,
-    updateIssueStatusByRule
+    updateIssueStatusByRule as updateIssueStatusByRuleService,
+    queryIssuesList as queryIssuesListService
 } from "./issues.service";
 import { AppError } from "../errors/AppError";
+import { issueListQuerySchema } from "./issue.schema";
 
 export async function createIssue(req: Request, res: Response, next: NextFunction) {
     try {
@@ -20,16 +21,6 @@ export async function createIssue(req: Request, res: Response, next: NextFunctio
     }
 }
 
-export async function getIssueByUserId(req: Request, res: Response, next: NextFunction) {
-    try {
-        const userId = req.userId!;
-        const result = await getIssueByUserIdService(userId);
-        res.json({ success: true, data: result });
-    } catch (error) {
-        next(error);
-    }
-}
-
 export async function getIssueById(req: Request<{ id: string }>, res: Response, next: NextFunction) {
     try {
         const id = req.params.id;
@@ -37,12 +28,10 @@ export async function getIssueById(req: Request<{ id: string }>, res: Response, 
         if (isNaN(issueId)) {
             throw new AppError(400, "Invalid issue ID");
         }
-
         const result = await getIssueByIdService(issueId);
         if (!result) {
             throw new AppError(404, "Issue not found");
         }
-
         res.json({ success: true, data: result });
     } catch (error) {
         next(error);
@@ -115,9 +104,31 @@ export async function updateIssueStatus(req: Request<{ id: string }>, res: Respo
             throw new AppError(403, "You are not the creator of this issue");
         }
         
-        const result = await updateIssueStatusByRule(issue, req.body.status);
+        const result = await updateIssueStatusByRuleService(issue, req.body.status);
         res.json({ success: true, data: result });
 
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function queryIssuesList(req: Request, res: Response, next: NextFunction) {
+    try {
+        const userId = req.userId!;
+        const parsed = issueListQuerySchema.parse(req.query);
+        const filters = { 
+            status: parsed.status, 
+            priority: parsed.priority,
+            page: parsed.page,
+            limit: parsed.limit
+        }; 
+
+        const result = await queryIssuesListService(userId, filters);
+        res.json({ 
+            success: true, 
+            data: result.issues,
+            pagination: result.pagination, 
+        });
     } catch (error) {
         next(error);
     }

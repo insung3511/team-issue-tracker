@@ -4,7 +4,8 @@ import {
     getIssueByUserId as getIssueByUserIdRepo,
     deleteIssue as deleteIssueRepo,
     updateIssue as updateIssueRepo,
-    updateIssueStatus as updateIssueStatusRepo
+    updateIssueStatus as updateIssueStatusRepo,
+    queryIssuesList as queryIssuesListRepo
 } from "./issues.repository";
 import { Comment, Issue, User } from "../generated/prisma";
 import { CreateIssueData } from "./issues.repository";
@@ -55,3 +56,37 @@ export async function updateIssueStatusByRule(issue: Issue, reqStatus: Issue["st
     return await updateIssueStatusRepo(issue.id, reqStatus);
 }
 
+export async function queryIssuesList(
+    userId: number, 
+    filters: {
+        status?: Issue["status"];
+        priority?: Issue["priority"];
+        page: number;
+        limit: number;
+    }): Promise<{
+        issues: (Issue & { creator: Pick<User, "id" | "name" | "email"> })[]; 
+        pagination: { page: number; limit: number; total: number; totalPages: number }
+    }> {
+    const data = await queryIssuesListRepo(userId, filters);
+
+    const totalPage = Math.ceil(data.total / filters.limit);
+    if (filters.page > totalPage) {
+        throw new AppError(400, "Page number exceeds total pages", { 
+            requestedPage: filters.page, 
+            totalPages: totalPage 
+        });
+    }
+
+    // result should be { pagination: {page, limit, total, totalPages } } 
+    const result = {
+        issues: data.issues,
+        pagination: {
+            page: filters.page,
+            limit: filters.limit,
+            total: data.total,
+            totalPages: totalPage
+        }
+    }
+
+    return result;
+}

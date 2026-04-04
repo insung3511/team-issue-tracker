@@ -75,6 +75,15 @@ Agent는 절대 백엔드 코드를 대신 작성하지 않는다.
 - 프론트엔드는 Agent가 작성하고, 사용자는 이에 맞춰 백엔드를 조율한다.
 - 모든 Agent는 한국어로 소통한다.
 
+## Important Notes
+
+- 사용자의 로컬 환경에서 Docker가 동작하지 않음
+- PostgreSQL 연결 시 마다 "Database does not exist" 오류 발생
+- 테스트 실행 시 이 문제를 기억하고 대안 제시 필요
+  - 대안 1: in-memory database (sqlite) 사용
+  - 대안 2: mocking 사용
+  - 대안 3: CI 환경에서만 테스트 실행
+
 ## Tech Stack
 
 - Backend: Express.js + TypeScript + Prisma + PostgreSQL + JWT + Zod

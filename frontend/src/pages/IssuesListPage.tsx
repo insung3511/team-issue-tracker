@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetIssuesQuery } from '../store/issuesApi';
 import type { IssueStatus, Priority } from '../types';
@@ -39,8 +40,19 @@ function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString();
 }
 
+const ITEMS_PER_PAGE = 10;
+
 export default function IssuesListPage() {
-  const { data, isLoading, error } = useGetIssuesQuery();
+  const [statusFilter, setStatusFilter] = useState<IssueStatus | ''>('');
+  const [priorityFilter, setPriorityFilter] = useState<Priority | ''>('');
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading, error } = useGetIssuesQuery({
+    ...(statusFilter && { status: statusFilter }),
+    ...(priorityFilter && { priority: priorityFilter }),
+    page,
+    limit: ITEMS_PER_PAGE,
+  });
 
   if (isLoading) {
     return <p>Loading issues…</p>;
@@ -51,6 +63,7 @@ export default function IssuesListPage() {
   }
 
   const issues = data?.data ?? [];
+  const pagination = data?.pagination;
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
@@ -69,6 +82,39 @@ export default function IssuesListPage() {
         >
           Create Issue
         </Link>
+      </div>
+
+      {/* Filter Controls */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <select
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value as IssueStatus | '');
+            setPage(1);
+          }}
+          style={{ padding: 8, borderRadius: 4, border: '1px solid #ccc' }}
+        >
+          <option value="">All Statuses</option>
+          <option value="BACKLOG">BACKLOG</option>
+          <option value="TODO">TODO</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="IN_REVIEW">IN_REVIEW</option>
+          <option value="DONE">DONE</option>
+        </select>
+        <select
+          value={priorityFilter}
+          onChange={(e) => {
+            setPriorityFilter(e.target.value as Priority | '');
+            setPage(1);
+          }}
+          style={{ padding: 8, borderRadius: 4, border: '1px solid #ccc' }}
+        >
+          <option value="">All Priorities</option>
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="HIGH">HIGH</option>
+          <option value="URGENT">URGENT</option>
+        </select>
       </div>
 
       {issues.length === 0 ? (
@@ -108,6 +154,55 @@ export default function IssuesListPage() {
             ))}
           </tbody>
         </table>
+      )}
+
+      {/* Pagination Controls */}
+      {pagination && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 12,
+            marginTop: 16,
+            padding: '12px 0',
+          }}
+        >
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page <= 1}
+            style={{
+              padding: '8px 16px',
+              borderRadius: 4,
+              border: '1px solid #ddd',
+              backgroundColor: '#fff',
+              cursor: page <= 1 ? 'not-allowed' : 'pointer',
+              opacity: page <= 1 ? 0.5 : 1,
+            }}
+          >
+            ← Previous
+          </button>
+          <span style={{ color: '#555', fontSize: 14 }}>
+            Page {pagination.page} of {pagination.totalPages}
+          </span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={page >= pagination.totalPages}
+            style={{
+              padding: '8px 16px',
+              borderRadius: 4,
+              border: '1px solid #ddd',
+              backgroundColor: '#fff',
+              cursor: page >= pagination.totalPages ? 'not-allowed' : 'pointer',
+              opacity: page >= pagination.totalPages ? 0.5 : 1,
+            }}
+          >
+            Next →
+          </button>
+          <span style={{ color: '#888', fontSize: 13 }}>
+            {pagination.total} issues total
+          </span>
+        </div>
       )}
     </div>
   );

@@ -1,8 +1,8 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 9/14
-- **Date**: 2026-03-30
+- **Day**: 10/14
+- **Date**: 2026-04-02
 - **Sprint Status**: on_track
 
 ---
@@ -14,6 +14,16 @@
 > - **Yesterday**: [what was done]
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
+
+### Day 11 — 2026-04-03
+- **Yesterday**: TRACKER-012 대시보드 통계 API 완료
+- **Today**: TRACKER-013 통합 테스트 보강 + TS Index Signatures 패턴
+- **Blockers**: Docker가 동작하지 않아 PostgreSQL 연결 불가 → 테스트 실행受阻
+
+### Day 10 — 2026-04-02
+- **Yesterday**: TRACKER-011 Swagger 문서화 완료
+- **Today**: TRACKER-012 대시보드 통계 API + TS Enum vs Union Types 패턴
+- **Blockers**: None
 
 ### Day 9 — 2026-03-30
 - **Yesterday**: TRACKER-010 필터링 + 페이지네이션 완료
@@ -74,6 +84,8 @@
 | 6 | `Record<K, V>` | `issues.service.ts` | `Record<Issue["status"], Issue["status"][]>` — 상태 전이 맵 + 스프레드 연산자(`...`), `AppError` 확장 |
 | 7 | 복습 | — | Week 1 패턴 전체 점검 |
 | 8 | `Pick` + `Partial` | `issue.schema.ts`, `issues.repository.ts` | 필터 쿼리 파라미터 타입 설계 + `Prisma.IssueWhereInput` 동적 where 구성 |
+| 9 | `Readonly` / `as const` | `stats.service.ts` | TS union type으로 Prisma enum 대신 타입 정의 |
+| 10 | Enum vs Union Types | `stats.service.ts` | Prisma 생성 enum vs TS union type 차이 실습 |
 
 ---
 
@@ -107,10 +119,11 @@
 
 > Continuity notes for PM/Dev Lead/Frontend agents between sessions.
 
-- **Last Dev Lead TS lesson (현우)**: Day 6 — `Record<K, V>` 상태 전이 맵, `AppError` 확장 (`info` 필드)
-- **Frontend Agent last work**: Day 8 — 댓글 CRUD UI (commentsApi + IssueDetailPage 수정) + 필터/페이지네이션 UI (issuesApi 쿼리 파라미터 + IssuesListPage 필터/페이지네이션 컨트롤)
-- **PM last ticket issued**: TRACKER-001 ~ TRACKER-011
+- **Last Dev Lead TS lesson (현우)**: Day 10 — TS union type vs Prisma enum 차이
+- **Frontend Agent last work**: Day 8 — 댓글 CRUD UI + 필터/페이지네이션 UI
+- **PM last ticket issued**: TRACKER-001 ~ TRACKER-012
 - **Dev Lead**: 현우 (Day 6~, 태훈 → 현우 교체)
+- **Docker Issue**: ⚠️ 사용자의 로컬에서 Docker가 동작하지 않아 PostgreSQL 연결 불가. 테스트 실행 시 마다 이 문제 발생. 데이터베이스 없이 테스트하려면 mocking이 필요하거나 in-memory database 사용 검토 필요.
 - **Frontend review feedback pending**: 에러 key 불일치(`message`→`error`), status 수정 미작동, Badge 중복, null vs undefined
 
 ---
@@ -217,7 +230,7 @@
 ### TRACKER-012
 - **Title**: [Stats] 대시보드 통계 API
 - **Priority**: LOW | **SP**: 2
-- **Status**: 📋 Backlog
+- **Status**: ✅ Done
 - **AC**:
   - `GET /api/stats/overview` → 상태별 count
   - `GET /api/stats/by-priority` → 우선순위별 count

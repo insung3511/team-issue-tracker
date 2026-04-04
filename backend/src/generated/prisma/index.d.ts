@@ -275,8 +275,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.5.0
-   * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
+   * Prisma Client JS version: 7.6.0
+   * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
    */
   export type PrismaVersion = {
     client: string
@@ -2418,7 +2418,6 @@ export namespace Prisma {
     description: number
     status: number
     priority: number
-    labels: number
     creatorId: number
     assigneeId: number
     createdAt: number
@@ -2469,7 +2468,6 @@ export namespace Prisma {
     description?: true
     status?: true
     priority?: true
-    labels?: true
     creatorId?: true
     assigneeId?: true
     createdAt?: true
@@ -2569,7 +2567,6 @@ export namespace Prisma {
     description: string | null
     status: $Enums.IssueStatus
     priority: $Enums.Priority
-    labels: string[]
     creatorId: number
     assigneeId: number | null
     createdAt: Date
@@ -2601,7 +2598,6 @@ export namespace Prisma {
     description?: boolean
     status?: boolean
     priority?: boolean
-    labels?: boolean
     creatorId?: boolean
     assigneeId?: boolean
     createdAt?: boolean
@@ -2618,7 +2614,6 @@ export namespace Prisma {
     description?: boolean
     status?: boolean
     priority?: boolean
-    labels?: boolean
     creatorId?: boolean
     assigneeId?: boolean
     createdAt?: boolean
@@ -2633,7 +2628,6 @@ export namespace Prisma {
     description?: boolean
     status?: boolean
     priority?: boolean
-    labels?: boolean
     creatorId?: boolean
     assigneeId?: boolean
     createdAt?: boolean
@@ -2648,14 +2642,13 @@ export namespace Prisma {
     description?: boolean
     status?: boolean
     priority?: boolean
-    labels?: boolean
     creatorId?: boolean
     assigneeId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type IssueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "status" | "priority" | "labels" | "creatorId" | "assigneeId" | "createdAt" | "updatedAt", ExtArgs["result"]["issue"]>
+  export type IssueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "status" | "priority" | "creatorId" | "assigneeId" | "createdAt" | "updatedAt", ExtArgs["result"]["issue"]>
   export type IssueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     creator?: boolean | UserDefaultArgs<ExtArgs>
     assignee?: boolean | Issue$assigneeArgs<ExtArgs>
@@ -2684,7 +2677,6 @@ export namespace Prisma {
       description: string | null
       status: $Enums.IssueStatus
       priority: $Enums.Priority
-      labels: string[]
       creatorId: number
       assigneeId: number | null
       createdAt: Date
@@ -3120,7 +3112,6 @@ export namespace Prisma {
     readonly description: FieldRef<"Issue", 'String'>
     readonly status: FieldRef<"Issue", 'IssueStatus'>
     readonly priority: FieldRef<"Issue", 'Priority'>
-    readonly labels: FieldRef<"Issue", 'String[]'>
     readonly creatorId: FieldRef<"Issue", 'Int'>
     readonly assigneeId: FieldRef<"Issue", 'Int'>
     readonly createdAt: FieldRef<"Issue", 'DateTime'>
@@ -4746,7 +4737,6 @@ export namespace Prisma {
     description: 'description',
     status: 'status',
     priority: 'priority',
-    labels: 'labels',
     creatorId: 'creatorId',
     assigneeId: 'assigneeId',
     createdAt: 'createdAt',
@@ -4980,7 +4970,6 @@ export namespace Prisma {
     description?: StringNullableFilter<"Issue"> | string | null
     status?: EnumIssueStatusFilter<"Issue"> | $Enums.IssueStatus
     priority?: EnumPriorityFilter<"Issue"> | $Enums.Priority
-    labels?: StringNullableListFilter<"Issue">
     creatorId?: IntFilter<"Issue"> | number
     assigneeId?: IntNullableFilter<"Issue"> | number | null
     createdAt?: DateTimeFilter<"Issue"> | Date | string
@@ -4996,7 +4985,6 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     status?: SortOrder
     priority?: SortOrder
-    labels?: SortOrder
     creatorId?: SortOrder
     assigneeId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -5015,7 +5003,6 @@ export namespace Prisma {
     description?: StringNullableFilter<"Issue"> | string | null
     status?: EnumIssueStatusFilter<"Issue"> | $Enums.IssueStatus
     priority?: EnumPriorityFilter<"Issue"> | $Enums.Priority
-    labels?: StringNullableListFilter<"Issue">
     creatorId?: IntFilter<"Issue"> | number
     assigneeId?: IntNullableFilter<"Issue"> | number | null
     createdAt?: DateTimeFilter<"Issue"> | Date | string
@@ -5031,7 +5018,6 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     status?: SortOrder
     priority?: SortOrder
-    labels?: SortOrder
     creatorId?: SortOrder
     assigneeId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -5052,7 +5038,6 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Issue"> | string | null
     status?: EnumIssueStatusWithAggregatesFilter<"Issue"> | $Enums.IssueStatus
     priority?: EnumPriorityWithAggregatesFilter<"Issue"> | $Enums.Priority
-    labels?: StringNullableListFilter<"Issue">
     creatorId?: IntWithAggregatesFilter<"Issue"> | number
     assigneeId?: IntNullableWithAggregatesFilter<"Issue"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Issue"> | Date | string
@@ -5208,7 +5193,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     creator: UserCreateNestedOneWithoutCreatedIssuesInput
@@ -5222,7 +5206,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     creatorId: number
     assigneeId?: number | null
     createdAt?: Date | string
@@ -5235,7 +5218,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creator?: UserUpdateOneRequiredWithoutCreatedIssuesNestedInput
@@ -5249,7 +5231,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     creatorId?: IntFieldUpdateOperationsInput | number
     assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5263,7 +5244,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     creatorId: number
     assigneeId?: number | null
     createdAt?: Date | string
@@ -5275,7 +5255,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -5286,7 +5265,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     creatorId?: IntFieldUpdateOperationsInput | number
     assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5540,14 +5518,6 @@ export namespace Prisma {
     not?: NestedEnumPriorityFilter<$PrismaModel> | $Enums.Priority
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -5580,7 +5550,6 @@ export namespace Prisma {
     description?: SortOrder
     status?: SortOrder
     priority?: SortOrder
-    labels?: SortOrder
     creatorId?: SortOrder
     assigneeId?: SortOrder
     createdAt?: SortOrder
@@ -5867,10 +5836,6 @@ export namespace Prisma {
     deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
-  export type IssueCreatelabelsInput = {
-    set: string[]
-  }
-
   export type UserCreateNestedOneWithoutCreatedIssuesInput = {
     create?: XOR<UserCreateWithoutCreatedIssuesInput, UserUncheckedCreateWithoutCreatedIssuesInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedIssuesInput
@@ -5907,11 +5872,6 @@ export namespace Prisma {
 
   export type EnumPriorityFieldUpdateOperationsInput = {
     set?: $Enums.Priority
-  }
-
-  export type IssueUpdatelabelsInput = {
-    set?: string[]
-    push?: string | string[]
   }
 
   export type UserUpdateOneRequiredWithoutCreatedIssuesNestedInput = {
@@ -6215,7 +6175,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     assignee?: UserCreateNestedOneWithoutAssignedIssuesInput
@@ -6228,7 +6187,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     assigneeId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6250,7 +6208,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     creator: UserCreateNestedOneWithoutCreatedIssuesInput
@@ -6263,7 +6220,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     creatorId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6330,7 +6286,6 @@ export namespace Prisma {
     description?: StringNullableFilter<"Issue"> | string | null
     status?: EnumIssueStatusFilter<"Issue"> | $Enums.IssueStatus
     priority?: EnumPriorityFilter<"Issue"> | $Enums.Priority
-    labels?: StringNullableListFilter<"Issue">
     creatorId?: IntFilter<"Issue"> | number
     assigneeId?: IntNullableFilter<"Issue"> | number | null
     createdAt?: DateTimeFilter<"Issue"> | Date | string
@@ -6579,7 +6534,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     creator: UserCreateNestedOneWithoutCreatedIssuesInput
@@ -6592,7 +6546,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     creatorId: number
     assigneeId?: number | null
     createdAt?: Date | string
@@ -6654,7 +6607,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creator?: UserUpdateOneRequiredWithoutCreatedIssuesNestedInput
@@ -6667,7 +6619,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     creatorId?: IntFieldUpdateOperationsInput | number
     assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6680,7 +6631,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     assigneeId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6692,7 +6642,6 @@ export namespace Prisma {
     description?: string | null
     status?: $Enums.IssueStatus
     priority?: $Enums.Priority
-    labels?: IssueCreatelabelsInput | string[]
     creatorId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -6711,7 +6660,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     assignee?: UserUpdateOneWithoutAssignedIssuesNestedInput
@@ -6724,7 +6672,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6737,7 +6684,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     assigneeId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6748,7 +6694,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creator?: UserUpdateOneRequiredWithoutCreatedIssuesNestedInput
@@ -6761,7 +6706,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     creatorId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6774,7 +6718,6 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
     priority?: EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
-    labels?: IssueUpdatelabelsInput | string[]
     creatorId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

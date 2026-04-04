@@ -115,11 +115,32 @@
 - [x] TRACKER-011: Swagger 문서화 (주요 3개)
   - [x] `GET /api-docs` → Swagger UI
   - [x] register, issues CRUD, status transition 문서화
-- [ ] TS 패턴: `Readonly` / `as const` — 상수 객체/배열 수정 방지
+- [x] TS 패턴: `Readonly` / `as const` — 상수 객체/배열 수정 방지
+
+## ✅ Day 10 — TRACKER-012 대시보드 통계 API 완료
+
+- [x] TRACKER-012: 대시보드 통계 API
+  - [x] `GET /api/stats/overview` → 상태별 count (`Record<IssueStatus, number>`)
+  - [x] `GET /api/stats/by-priority` → 우선순위별 count (`Record<IssuePriority, number>`)
+  - [x] `GET /api/stats/by-assignee` → 담당자별 count + 이름 (`Record<string, number>`)
+  - [x] stats 모듈 생성 (routes, controller, service)
+  - [x] TS union type 정의 (`IssueStatus`, `IssuePriority`)
+  - [x] Prisma `groupBy` + 수동 유저 이름 조회 조합
+- [x] TS 패턴: Enum vs Union Types — Prisma enum 대신 TS union type으로 타입 정의
+
+## ⚠️ Day 11 — TRACKER-013 진행 중 (Docker 문제로 테스트受阻)
+
+- [x] 테스트 코드 작성 완료 (auth, issues, comments, stats)
+- [ ] 테스트 실행 실패 — Docker가 동작하지 않아 PostgreSQL 연결 불가
+- [ ] TS 패턴: Index Signatures — `{ [key: string]: number }` vs `Record<K, V>`
+
+### 🔴 Docker 문제 기록
+- 사용자의 로컬에서 Docker가 동작하지 않음
+- PostgreSQL 연결 시 마다 "Database does not exist" 오류 발생
+- 대안 필요: in-memory database (sqlite) 또는 mocking 사용 검토
 
 ## 🔜 Upcoming
 
-- [ ] TRACKER-012: 대시보드 통계 API (Day 10)
 - [ ] TRACKER-013: 통합 테스트 보강 (Day 11-12)
 - [ ] TRACKER-014: 최종 리팩토링 + 회고 (Day 13-14)
 

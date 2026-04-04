@@ -3,6 +3,8 @@ import { errorHandler } from './middleware/errorHandler';
 import authRoutes from './auth/auth.routes';
 import issuesRoutes from './issues/issues.routes';
 import commentRoutes from './comments/comments.routes';
+import statsRoute from './stats/stats.routes';
+
 import swaggerJSDoc from 'swagger-jsdoc';
 import * as swaggerUi from 'swagger-ui-express';
 
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/issues', issuesRoutes);
 app.use('/api', commentRoutes);
+app.use('/api/stats', statsRoute);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({
     definition: {
         openapi: '3.0.0',

@@ -1,10 +1,21 @@
 import { baseApi } from './api';
-import type { ApiResponse, Issue, Priority, IssueStatus } from '../types';
+import type { ApiResponse, PaginatedResponse, Issue, Priority, IssueStatus } from '../types';
 
 export const issuesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getIssues: builder.query<ApiResponse<Issue[]>, void>({
-      query: () => '/issues',
+    getIssues: builder.query<
+      PaginatedResponse<Issue>,
+      { status?: IssueStatus; priority?: Priority; page?: number; limit?: number } | void
+    >({
+      query: (params) => {
+        const searchParams = new URLSearchParams();
+        if (params && params.status) searchParams.set('status', params.status);
+        if (params && params.priority) searchParams.set('priority', params.priority);
+        if (params && params.page) searchParams.set('page', String(params.page));
+        if (params && params.limit) searchParams.set('limit', String(params.limit));
+        const qs = searchParams.toString();
+        return `/issues${qs ? `?${qs}` : ''}`;
+      },
       providesTags: ['Issue'],
     }),
     getIssueById: builder.query<ApiResponse<Issue>, number>({

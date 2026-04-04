@@ -1,12 +1,11 @@
 import prisma from "../lib/prisma";
-import { Comment, Issue, User } from "../generated/prisma";
+import { Comment, Issue, Prisma, User } from "../generated/prisma";
 
 export interface CreateIssueData {
     title: string;
     priority: Issue["priority"];
     creatorId: number;
-    description?: string;
-    labels?: string[]; 
+    description?: string; 
     assigneeId?: number;
 }
 
@@ -17,7 +16,6 @@ export async function createIssue(data: CreateIssueData): Promise<Issue> {
             description: data.description,
             priority: data.priority,
             creatorId: data.creatorId,
-            labels: data.labels,
             assigneeId: data.assigneeId,
         },
     });
@@ -73,7 +71,6 @@ export async function updateIssue(issueId: number, data: Partial<CreateIssueData
             title: data.title,
             description: data.description,
             priority: data.priority,
-            labels: data.labels,
             assigneeId: data.assigneeId,
         },
     });
@@ -86,4 +83,47 @@ export async function updateIssueStatus(issueId: number, status: Issue["status"]
             status,
         },
     });
+}
+
+export async function queryIssuesList(
+    userId: number, 
+    filters: {
+        status?: Issue["status"]; 
+        priority?: Issue["priority"]; 
+        page: number; 
+        limit: number; 
+    }): Promise<{ issues: (Issue & { creator: Pick<User, "id" | "name" | "email"> })[]; total: number }> {
+    const whereClause: Prisma.IssueWhereInput = {
+        OR: [
+            { creatorId: userId },
+            { assigneeId: userId },
+        ],
+    };
+
+    if (filters.status) {
+        whereClause.status = filters.status;
+    }
+    if (filters.priority) {
+        whereClause.priority = filters.priority;
+    }
+
+    const [issues, total] = await Promise.all([
+        prisma.issue.findMany({
+            where: whereClause,
+            skip: (filters.page - 1) * filters.limit,
+            take: filters.limit,
+            include: { 
+                creator: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    }
+                },
+            },
+        }),
+        prisma.issue.count({ where: whereClause }),
+    ]);
+
+    return { issues, total };
 }
