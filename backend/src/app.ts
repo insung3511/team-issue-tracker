@@ -37,7 +37,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({
 } as swaggerUi.SwaggerUiOptions))); 
 
 // 404 handler
-app.use((req, res) => {
+app.use((_req, res) => {
   res.status(404).json({ success: false, error: 'Not Found' });
 });
 

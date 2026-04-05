@@ -12,9 +12,9 @@ import { issueListQuerySchema } from "./issue.schema";
 
 export async function createIssue(req: Request, res: Response, next: NextFunction) {
     try {
-        const { title, description, priority, labels, assigneeId } = req.body;
+        const { title, description, priority, assigneeId } = req.body;
         const creatorId = req.userId!;
-        const result = await createIssueService({ title, description, priority, labels, assigneeId, creatorId });
+        const result = await createIssueService({ title, description, priority, assigneeId, creatorId });
         res.status(201).json({ success: true, data: result });
     } catch (error) {
         next(error);
@@ -79,8 +79,8 @@ export async function updateIssue(req: Request<{ id: string }>, res: Response, n
             throw new AppError(403, "You are not the creator of this issue");
         }
 
-        const { title, description, priority, labels, assigneeId } = req.body;
-        const result = await updateIssueService(issueId, { title, description, priority, labels, assigneeId });
+        const { title, description, priority, assigneeId } = req.body;
+        const result = await updateIssueService(issueId, { title, description, priority, assigneeId });
         res.json({ success: true, data: result });
     } catch (error) {
         next(error);

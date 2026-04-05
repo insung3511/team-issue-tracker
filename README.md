@@ -16,7 +16,7 @@
 |------|------|------|
 | 사용자 | Backend Developer (인턴) | 백엔드 API 직접 구현 |
 | 다은 | PM | 스프린트 관리, 티켓 할당, 일정 조율 |
-| 태훈 | Dev Lead | 코드 리뷰, TS 패턴 가이드, 아키텍처 멘토링 |
+| 현우 | Dev Lead | 코드 리뷰, TS 패턴 가이드, 아키텍처 멘토링 |
 | 하은 | CI/CD & Review | GitHub Actions, 코드 품질 체크, 머지 기준 관리 |
 | 서준 | Frontend Developer | React + RTK Query 프론트엔드 구현 |
 
@@ -25,7 +25,7 @@
 ```
 1. "day N 시작하자" → PM(다은)이 오늘의 티켓 브리핑
 2. 사용자가 백엔드 코드 직접 구현
-3. 막히면 Dev Lead(태훈)에게 질문
+3. 막히면 Dev Lead(현우)에게 질문
 4. 완성 후 CI/CD(하은)에게 품질 체크 요청
 5. Frontend(서준)가 동시에 프론트 작업, API 인터페이스 조율
 ```
@@ -44,15 +44,19 @@
 ### Prerequisites
 
 - Node.js 18+
-- Docker (for PostgreSQL)
+- PostgreSQL (Homebrew 권장: `brew install postgresql@18`)
 
 ### Backend
 
 ```bash
 cd backend
 npm install
-docker compose up -d   # PostgreSQL 시작
-npx prisma migrate dev
+
+# PostgreSQL 시작 (Homebrew)
+brew services start postgresql@18
+
+# DB 마이그레이션
+npx prisma migrate deploy
 npm run dev
 ```
 
@@ -69,9 +73,9 @@ npm run dev
 ```bash
 # Backend
 cd backend
-npx tsc --noEmit          # 타입 체크
-npx jest                  # 테스트 실행
-npx jest --coverage       # 커버리지 확인
+./node_modules/.bin/tsc --noEmit          # 타입 체크
+npm run test                              # 테스트 실행
+npm run test -- --coverage --runInBand    # 커버리지 확인
 
 # Frontend
 cd frontend
@@ -128,6 +132,27 @@ team-issue-tracker/
 - `TODO.md` — 현재 진행 중인 할 일 목록
 - `CLAUDE.md` — Agent 시뮬레이션 프로토콜
 
+## API Endpoints
+
+| Method | Endpoint | 설명 | 인증 |
+|--------|----------|------|------|
+| POST | `/api/auth/register` | 회원가입 | ❌ |
+| POST | `/api/auth/login` | 로그인 | ❌ |
+| GET | `/api/auth/me` | 내 정보 조회 | ✅ |
+| GET | `/api/issues` | 이슈 목록 (필터/페이지네이션) | ✅ |
+| POST | `/api/issues` | 이슈 생성 | ✅ |
+| GET | `/api/issues/:id` | 이슈 상세 조회 | ✅ |
+| PATCH | `/api/issues/:id` | 이슈 수정 | ✅ |
+| DELETE | `/api/issues/:id` | 이슈 삭제 (작성자만) | ✅ |
+| PATCH | `/api/issues/:id/status` | 이슈 상태 전이 | ✅ |
+| GET | `/api/issues/:issueId/comments` | 댓글 목록 | ✅ |
+| POST | `/api/issues/:issueId/comments` | 댓글 작성 | ✅ |
+| PATCH | `/api/comments/:commentId` | 댓글 수정 (작성자만) | ✅ |
+| DELETE | `/api/comments/:commentId` | 댓글 삭제 (작성자만) | ✅ |
+| GET | `/api/stats/overview` | 상태별 이슈 통계 | ✅ |
+| GET | `/api/stats/by-priority` | 우선순위별 통계 | ✅ |
+| GET | `/api/stats/by-assignee` | 담당자별 통계 | ✅ |
+
 ## API Documentation
 
-Available at `http://localhost:3000/api-docs` when backend is running.
+Swagger UI: `http://localhost:3000/api-docs` (백엔드 실행 시)

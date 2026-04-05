@@ -5,7 +5,7 @@ import {
 } from "../stats.service";
 import { createIssue } from "../../issues/issues.repository";
 import prisma from "../../lib/prisma";
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { describe, it, expect, beforeEach, afterAll } from "@jest/globals";
 import { Issue, User } from "../../generated/prisma";
 
 describe("Stats Service", () => {
@@ -78,5 +78,9 @@ describe("Stats Service", () => {
         "URGENT",
       ]));
     });
+  });
+  
+  afterAll(async () => {
+    await prisma.$disconnect();
   });
 });

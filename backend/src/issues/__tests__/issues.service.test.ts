@@ -8,9 +8,9 @@ import {
   queryIssuesList 
 } from '../issues.service';
 import prisma from '../../lib/prisma';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterAll } from '@jest/globals';
 import bcrypt from 'bcryptjs';
-import { Priority } from '../../generated/prisma';
+import { IssueStatus, Priority } from '../../generated/prisma';
 
 describe('Issues Service', () => {
   beforeEach(async () => {
@@ -214,5 +214,49 @@ describe('Issues Service', () => {
       // TODO: Testing Failed
       await expect(updateIssueStatus(createdIssue, 'DONE')).rejects.toThrow();             // 상태 전환 규칙 위반 (예: BACKLOG -> DONE)
     });
+  });
+
+  // queryIssuesList 테스트 추가
+  describe('query issues list', () => {
+    it('should return a paginated list of issues based on filters', async () => {
+      const user = await prisma.user.findUnique({ 
+        where: { email: 'test@example.com' } 
+      });
+      const issueData = {
+        title: 'Test Issue',
+        description: 'This is a test issue',
+        creatorId: user!.id,
+        priority: Priority.MEDIUM
+      };
+
+      await createIssue(issueData);
+      const filters = { status: IssueStatus.BACKLOG, priority: Priority.MEDIUM, page: 1, limit: 10 };
+      const result = await queryIssuesList(user!.id, filters);
+      expect(result).toHaveProperty('issues');
+      expect(result).toHaveProperty('pagination');
+      expect(result.issues).toHaveLength(1);
+    });
+
+    it('should throw when page exceeds total pages', async () => {
+      const user = await prisma.user.findUnique({
+        where: { email: 'test@example.com' }
+      });
+      const issueData = {
+        title: 'Test Issue',
+        description: 'This is a test issue',
+        creatorId: user!.id,
+        priority: Priority.MEDIUM
+      };
+
+      await createIssue(issueData);
+      // 페이지 번호가 총 페이지 수를 초과하는 경우 예외 발생
+
+      await expect(queryIssuesList(user!.id, { page: 9999, limit: 10 })).rejects.toThrow();
+      await expect(queryIssuesList(user!.id, { page: 0, limit: 10 })).rejects.toThrow();     
+    });
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
   });
 });

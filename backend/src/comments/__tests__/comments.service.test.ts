@@ -1,7 +1,7 @@
 import { createComment, deleteComment, getCommentsByIssueId, updateComment } from '../comments.service';
 import { createIssue } from '../../issues/issues.repository';
 import prisma from '../../lib/prisma';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterAll } from '@jest/globals';
 import bcrypt from 'bcryptjs';
 import { Issue, User } from '../../generated/prisma';
 
@@ -73,5 +73,9 @@ describe('Comments Service', () => {
             const deletedComment = await prisma.comment.findUnique({ where: { id: comment.id } });
             expect(deletedComment).toBeNull();
         });
+    });
+
+    afterAll(async () => {
+        await prisma.$disconnect();
     });
 });

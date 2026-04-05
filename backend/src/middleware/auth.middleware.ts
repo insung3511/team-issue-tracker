@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET: string = process.env.JWT_SECRET;
 
-export function authenticate(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers.authorization;
+export function authenticate(_req: Request, _res: Response, next: NextFunction) {
+    const authHeader = _req.headers.authorization;
     if (!authHeader) {
         throw new AppError(401, "Authorization header is missing");
     }
@@ -17,7 +17,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
 
     try {
         const decoded: { userId: number } = jwt.verify(token, JWT_SECRET) as { userId: number };
-        req.userId = decoded.userId;
+        _req.userId = decoded.userId;
         next();
     } catch (error) {
         throw new AppError(401, "Invalid token");

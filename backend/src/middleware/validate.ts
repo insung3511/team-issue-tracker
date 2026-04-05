@@ -3,7 +3,7 @@ import { ZodSchema } from 'zod';
 import { AppError } from '../errors/AppError';
 
 export function validate(schema: ZodSchema) {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
     if (!req.body) {
       return next(new AppError(400, 'Request body is required'));
     }

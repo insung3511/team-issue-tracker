@@ -1,6 +1,6 @@
 import { registerUser, loginUser, getMe } from '../auth.service';
 import prisma from '../../lib/prisma';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterAll } from '@jest/globals';
 import bcrypt from 'bcryptjs';
 
 describe ('Auth Service', () => {
@@ -67,5 +67,9 @@ describe ('Auth Service', () => {
         expect(result.name).toBe('Existing User');
         expect(result).not.toHaveProperty('password');
       });
+    });
+  
+    afterAll(async () => {
+        await prisma.$disconnect();
     });
 });

@@ -5,7 +5,7 @@ import {
   getIssueStatsByAssignee as getIssueStatsByAssigneeService 
 } from "./stats.service";
 
-export const getIssueStatsOverview = async (req: Request, res: Response, next: NextFunction) => {
+export const getIssueStatsOverview = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await getIssueStatsOverviewService();
     res.status(200).json({ success: true, data: result });
@@ -14,7 +14,7 @@ export const getIssueStatsOverview = async (req: Request, res: Response, next: N
   }
 };
 
-export const getIssueStatsByPriority = async (req: Request, res: Response, next: NextFunction) => {
+export const getIssueStatsByPriority = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await getIssueStatsByPriorityService();
     res.status(200).json({ success: true, data: result });
@@ -23,7 +23,7 @@ export const getIssueStatsByPriority = async (req: Request, res: Response, next:
   }
 };
 
-export const getIssueStatsByAssignee = async (req: Request, res: Response, next: NextFunction) => {
+export const getIssueStatsByAssignee = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await getIssueStatsByAssigneeService();
     res.status(200).json({ success: true, data: result });
