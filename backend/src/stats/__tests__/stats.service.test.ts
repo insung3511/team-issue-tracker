@@ -40,6 +40,9 @@ describe("Stats Service", () => {
   describe("get issue stats overview", () => {
     it("should return issue stats overview", async () => {
       const stats = await getIssueStatsOverview();
+      // TODO: Testing failed
+      // Expected: ArrayContaining ["BACKLOG", "TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"]
+      // Received: ["BACKLOG"]
       expect(Object.keys(stats)).toEqual(expect.arrayContaining([
         "BACKLOG",
         "TODO",

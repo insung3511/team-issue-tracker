@@ -128,21 +128,43 @@
   - [x] Prisma `groupBy` + 수동 유저 이름 조회 조합
 - [x] TS 패턴: Enum vs Union Types — Prisma enum 대신 TS union type으로 타입 정의
 
-## ⚠️ Day 11 — TRACKER-013 진행 중 (Docker 문제로 테스트受阻)
+## 🔜 Day 11 — TRACKER-013 테스트 코드 작성 완료
 
 - [x] 테스트 코드 작성 완료 (auth, issues, comments, stats)
-- [ ] 테스트 실행 실패 — Docker가 동작하지 않아 PostgreSQL 연결 불가
-- [ ] TS 패턴: Index Signatures — `{ [key: string]: number }` vs `Record<K, V>`
+- [x] Jest 설정 + PostgreSQL 연결 설정
+- [x] Jest setup 파일 생성 (jest.setup.ts)
+- [x] auth.service.test.ts — register, login, getMe 테스트
+- [x] issues.service.test.ts — CRUD + status update 테스트
+- [x] comments.service.test.ts — CRUD 테스트
+- [x] stats.service.test.ts — 통계 함수 테스트
+- [ ] 테스트 실행 — 일부 실패 (이메일 불일치, 상태 전이 로직 문제)
+- [x] TS 패턴: Index Signatures — `{ [key: string]: number }` vs `Record<K, V>`
 
-### 🔴 Docker 문제 기록
-- 사용자의 로컬에서 Docker가 동작하지 않음
-- PostgreSQL 연결 시 마다 "Database does not exist" 오류 발생
-- 대안 필요: in-memory database (sqlite) 또는 mocking 사용 검토
+### 🔴 기록
+- Docker 문제로 PostgreSQL 연결 불가 → Homebrew PostgreSQL로 해결
+- 테스트 10/23 통과, 13 실패 — 이메일 주소 불일치 및 상태 전이 로직 문제
 
-## 🔜 Upcoming
+## ✅ Day 12 — TRACKER-013 테스트 수정 + TS 전체 복습
 
-- [ ] TRACKER-013: 통합 테스트 보강 (Day 11-12)
-- [ ] TRACKER-014: 최종 리팩토링 + 회고 (Day 13-14)
+- [x] TRACKER-013: 테스트 실패 원인 분석 + 수정
+  - [x] Homebrew PostgreSQL 연결 문제 해결 (`createdb`, `prisma migrate deploy`)
+  - [x] `jest.setup.ts`에 `JWT_SECRET` 추가 (테스트 환경 env 누락)
+  - [x] 이메일 오타 수정 (`test@xample.com` → `test@example.com`)
+  - [x] `afterAll(() => prisma.$disconnect())` 추가 (open handles 정리)
+  - [x] `beforeEach` 삭제 순서 수정 (comment → issue → user, FK 제약 해결)
+  - [x] 상태 전이 테스트 로직 수정 (`BACKLOG → TODO`, 규칙 준수)
+  - [x] `--runInBand` 설정 (테스트 파일 간 DB 충돌 방지)
+  - [x] 최종 결과: 22/22 통과
+- [x] TS 패턴 전체 복습: Omit, Pick, Partial, Record, Generics, Index Signatures 등
+
+## 🔜 Day 13 — TRACKER-013 완료 확인 + TRACKER-014 시작
+
+- [ ] TRACKER-013: 커버리지 80% 이상 달성 확인 (`npm run test:coverage`)
+- [ ] TRACKER-014: 최종 리팩토링 시작
+  - [ ] `as any` 0건 확인
+  - [ ] 미사용 import 제거
+  - [ ] open handles 경고 정리 (`afterAll` 누락 파일 확인)
+- [ ] TS 패턴 전체 복습 II
 
 ## ⚠️ 잔여 이슈
 

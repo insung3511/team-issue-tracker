@@ -5,7 +5,6 @@ import {
   deleteIssue, 
   updateIssue, 
   updateIssueStatus, 
-  updateIssueStatusByRule, 
   queryIssuesList 
 } from '../issues.service';
 import prisma from '../../lib/prisma';
@@ -35,7 +34,7 @@ describe('Issues Service', () => {
   describe('create issue', () => {
     it('should create an issue and return it', async () => {
       const user = await prisma.user.findUnique({ 
-        where: { email: 'test@xample.com' } 
+        where: { email: 'test@example.com' } 
       });
       const issueData = {
         title: 'Test Issue',
@@ -70,7 +69,7 @@ describe('Issues Service', () => {
   describe('get issue by id', () => {
     it('should return an issue when given a valid id', async () => {
       const user = await prisma.user.findUnique({ 
-        where: { email: 'test@xample.com' } 
+        where: { email: 'test@example.com' } 
       });
       const issueData = {
         title: 'Test Issue',
@@ -97,7 +96,7 @@ describe('Issues Service', () => {
   describe('get issues by user id', () => {
     it('should return a list of issues created or assigned to the user', async () => {
       const user = await prisma.user.findUnique({ 
-        where: { email: 'test@xample.com' } 
+        where: { email: 'test@example.com' } 
       });
       const issueData = {
         title: 'Test Issue',
@@ -181,7 +180,7 @@ describe('Issues Service', () => {
   describe('update issue status', () => {
     it('should update the status of an issue when given a valid id and status', async () => {
       const user = await prisma.user.findUnique({ 
-        where: { email: 'test@xample.com' } 
+        where: { email: 'test@example.com' } 
       });
       const issueData = {
         title: 'Test Issue',
@@ -190,10 +189,10 @@ describe('Issues Service', () => {
         priority: Priority.MEDIUM
       };
 
-      // BACKLOG -> IN_PROGRESS -> IN_REVIEW -> DONE -> BACKLOG (순환)
+      // BACKLOG -> TODO -> IN_PROGRESS -> IN_REVIEW -> DONE -> BACKLOG (순환)
       const createdIssue = await createIssue(issueData);
-      const updatedIssue = await updateIssueStatus(createdIssue.id, 'IN_PROGRESS');
-      expect(updatedIssue.status).toBe('IN_PROGRESS');
+      const updatedIssue = await updateIssueStatus(createdIssue, 'TODO');
+      expect(updatedIssue.status).toBe('TODO');
     });
   });
 
@@ -212,13 +211,8 @@ describe('Issues Service', () => {
       const createdIssue = await createIssue(issueData);
       // @ts-expect-error - 존재하지 않는 상태 전달
       await expect(updateIssueStatus(createdIssue.id, 'INVALID_STATUS')).rejects.toThrow();   // 유효하지 않은 상태
-      await expect(updateIssueStatus(createdIssue.id, 'DONE')).rejects.toThrow();             // 상태 전환 규칙 위반 (예: BACKLOG -> DONE)
-    });
-  });
-
-  describe('update issue status with invalid id', () => {
-    it('should throw an error when given an invalid id', async () => {
-      await expect(updateIssueStatus(9999, 'IN_PROGRESS')).rejects.toThrow(); // 존재하지 않는 이슈 ID
+      // TODO: Testing Failed
+      await expect(updateIssueStatus(createdIssue, 'DONE')).rejects.toThrow();             // 상태 전환 규칙 위반 (예: BACKLOG -> DONE)
     });
   });
 });

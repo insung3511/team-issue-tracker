@@ -5,7 +5,8 @@ import bcrypt from 'bcryptjs';
 
 describe ('Auth Service', () => {
     beforeEach(async () => {
-        // 테스트용 사용자 생성
+        await prisma.comment.deleteMany();
+        await prisma.issue.deleteMany();
         await prisma.user.deleteMany();
     });
 

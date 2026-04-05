@@ -4,31 +4,50 @@ export type IssueStatus = "BACKLOG" | "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DO
 export type IssuePriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 
 export async function getIssueStatsOverview() {
-  const statusCounts = await prisma.issue.groupBy({
+  type statsTypes = Record<IssueStatus, number>
+  const initialStats: statsTypes = {
+    BACKLOG: 0,
+    TODO: 0,
+    IN_PROGRESS: 0,
+    IN_REVIEW: 0,
+    DONE: 0,
+  }
+
+  const result = await prisma.issue.groupBy({
     by: ["status"],
     _count: {
       status: true,
     },
   });
 
-  return statusCounts.reduce((acc, curr) => {
-    acc[curr.status] = curr._count.status;
-    return acc;
-  }, {} as Record<IssueStatus, number>);
+  result.forEach((item) => {
+    initialStats[item.status] = item._count.status;
+  });
+
+  return initialStats;
 }
 
 export async function getIssueStatsByPriority() {
-  const priorityCounts = await prisma.issue.groupBy({
+  type priorityTypes = Record<IssuePriority, number>
+  const priotiryCounts: priorityTypes = {
+    LOW: 0,
+    MEDIUM: 0,
+    HIGH: 0,
+    URGENT: 0,
+  };
+
+  const resultPriority = await prisma.issue.groupBy({
     by: ["priority"],
     _count: {
       priority: true,
     },
   });
 
-  return priorityCounts.reduce((acc, curr) => {
-    acc[curr.priority] = curr._count.priority;
-    return acc;
-  }, {} as Record<IssuePriority, number>);
+  resultPriority.forEach((item) => {
+    priotiryCounts[item.priority] = item._count.priority;
+  });
+
+  return priotiryCounts;
 }
 
 export async function getIssueStatsByAssignee() {

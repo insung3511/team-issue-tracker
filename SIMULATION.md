@@ -1,8 +1,8 @@
 # Simulation State
 
 ## Current Sprint
-- **Day**: 10/14
-- **Date**: 2026-04-02
+- **Day**: 13/14
+- **Date**: 2026-04-05
 - **Sprint Status**: on_track
 
 ---
@@ -14,6 +14,16 @@
 > - **Yesterday**: [what was done]
 > - **Today**: [planned work]
 > - **Blockers**: [any issues]
+
+### Day 13 — 2026-04-05
+- **Yesterday**: TRACKER-013 테스트 실패 수정 (22/22 통과), TS 전체 복습
+- **Today**: TRACKER-013 커버리지 확인 + TRACKER-014 최종 리팩토링 시작
+- **Blockers**: open handles 경고 잔존 (afterAll 누락 파일) — 기능 영향 없음
+
+### Day 12 — 2026-04-04
+- **Yesterday**: TRACKER-013 테스트 코드 작성 (4개 파일), 테스트 실행 결과 10/23 통과, 13 실패
+- **Today**: TRACKER-013 테스트 실패 원인 분석 + 수정 + TS 전체 복습
+- **Blockers**: Docker가 동작하지 않아 PostgreSQL 연결 불가 → Homebrew PostgreSQL로 해결
 
 ### Day 11 — 2026-04-03
 - **Yesterday**: TRACKER-012 대시보드 통계 API 완료
@@ -86,6 +96,9 @@
 | 8 | `Pick` + `Partial` | `issue.schema.ts`, `issues.repository.ts` | 필터 쿼리 파라미터 타입 설계 + `Prisma.IssueWhereInput` 동적 where 구성 |
 | 9 | `Readonly` / `as const` | `stats.service.ts` | TS union type으로 Prisma enum 대신 타입 정의 |
 | 10 | Enum vs Union Types | `stats.service.ts` | Prisma 생성 enum vs TS union type 차이 실습 |
+| 11 | Index Signatures | 테스트 코드 작성 | `{ [key: string]: number }` 타입 정의 (Record와 비교) |
+| 12 | 전체 복습 | 테스트 코드 수정 | 테스트 환경 디버깅 (JWT_SECRET, FK 순서, 상태전이), 22/22 통과 |
+| 13 | 전체 복습 II | — | Day 13 진행 중 |
 
 ---
 
@@ -123,7 +136,7 @@
 - **Frontend Agent last work**: Day 8 — 댓글 CRUD UI + 필터/페이지네이션 UI
 - **PM last ticket issued**: TRACKER-001 ~ TRACKER-012
 - **Dev Lead**: 현우 (Day 6~, 태훈 → 현우 교체)
-- **Docker Issue**: ⚠️ 사용자의 로컬에서 Docker가 동작하지 않아 PostgreSQL 연결 불가. 테스트 실행 시 마다 이 문제 발생. 데이터베이스 없이 테스트하려면 mocking이 필요하거나 in-memory database 사용 검토 필요.
+- **Docker Issue**: ✅ Homebrew PostgreSQL(`postgresql@18`)로 해결. `brew services start postgresql@18` + `prisma migrate deploy` 완료. 테스트 정상 실행 중.
 - **Frontend review feedback pending**: 에러 key 불일치(`message`→`error`), status 수정 미작동, Badge 중복, null vs undefined
 
 ---
@@ -239,10 +252,11 @@
 ### TRACKER-013
 - **Title**: [Quality] 통합 테스트 보강
 - **Priority**: MEDIUM | **SP**: 2
-- **Status**: 📋 Backlog
+- **Status**: 🔄 In Progress
 - **AC**:
   - 전체 플로우 통합 테스트 (가입→로그인→이슈→댓글)
   - 서비스 레이어 커버리지 >80%
+- **Note**: 22/22 통과 (`--runInBand`). open handles 경고 잔존.
 
 ### TRACKER-014
 - **Title**: [Review] 최종 리팩토링 + 회고

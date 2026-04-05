@@ -4,7 +4,7 @@ import {
     getIssueById as getIssueByIdService, 
     deleteIssue as deleteIssueService,
     updateIssue as updateIssueService,
-    updateIssueStatusByRule as updateIssueStatusByRuleService,
+    updateIssueStatus as updateIssueStatusByRuleService,
     queryIssuesList as queryIssuesListService
 } from "./issues.service";
 import { AppError } from "../errors/AppError";

@@ -31,11 +31,12 @@ export async function updateIssue(id: number, data: Partial<CreateIssueData>): P
     return await updateIssueRepo(id, data);
 }
 
-export async function updateIssueStatus(id: number, status: Issue["status"]): Promise<Issue> {
-    return await updateIssueStatusRepo(id, status);
-}
+// export async function updateIssueStatus(id: number, status: Issue["status"]): Promise<Issue> {
+//     return await updateIssueStatusRepo(id, status);
+// }
 
-export async function updateIssueStatusByRule(issue: Issue, reqStatus: Issue["status"]): Promise<Issue> {
+// NOTE: Previous function name was 'updateIssueStatusByRule'
+export async function updateIssueStatus(issue: Issue, reqStatus: Issue["status"]): Promise<Issue> {
     const issueStatusRecord: Record<Issue["status"], Issue["status"][]> = {
         "BACKLOG": ["TODO"],
         "TODO": ["IN_PROGRESS"],
