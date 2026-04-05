@@ -26,8 +26,11 @@ export default function Layout() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <Link to="/issues" style={{ fontWeight: 700, fontSize: 18, textDecoration: 'none', color: '#111' }}>
+          <Link to="/dashboard" style={{ fontWeight: 700, fontSize: 18, textDecoration: 'none', color: '#111' }}>
             Team Issue Tracker
+          </Link>
+          <Link to="/dashboard" style={{ textDecoration: 'none', color: '#555' }}>
+            Dashboard
           </Link>
           <Link to="/issues" style={{ textDecoration: 'none', color: '#555' }}>
             Issues

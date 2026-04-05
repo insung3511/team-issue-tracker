@@ -4,43 +4,11 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { useGetIssueByIdQuery, useUpdateIssueMutation, useUpdateIssueStatusMutation, useDeleteIssueMutation } from '../store/issuesApi';
 import { useCreateCommentMutation, useUpdateCommentMutation, useDeleteCommentMutation } from '../store/commentsApi';
+import { StatusBadge, PriorityBadge } from '../components/Badge';
 import type { IssueStatus, Priority } from '../types';
-
-const statusColors: Record<IssueStatus, string> = {
-  BACKLOG: '#888',
-  TODO: '#2563eb',
-  IN_PROGRESS: '#ea580c',
-  IN_REVIEW: '#7c3aed',
-  DONE: '#16a34a',
-};
-
-const priorityColors: Record<Priority, string> = {
-  LOW: '#888',
-  MEDIUM: '#2563eb',
-  HIGH: '#ea580c',
-  URGENT: '#dc2626',
-};
 
 const allStatuses: IssueStatus[] = ['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE'];
 const allPriorities: Priority[] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
-
-function Badge({ label, color }: { label: string; color: string }) {
-  return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '2px 8px',
-        borderRadius: 4,
-        fontSize: 12,
-        fontWeight: 600,
-        color: '#fff',
-        backgroundColor: color,
-      }}
-    >
-      {label}
-    </span>
-  );
-}
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleString();
@@ -250,9 +218,9 @@ export default function IssueDetailPage() {
           </div>
 
           <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center' }}>
-            <Badge label={issue.status} color={statusColors[issue.status]} />
-            <Badge label={issue.priority} color={priorityColors[issue.priority]} />
-            {isCreator && !changingStatus && (
+            <StatusBadge status={issue.status} />
+            <PriorityBadge priority={issue.priority} />
+            {user && !changingStatus && (
               <button
                 onClick={startStatusChange}
                 style={{

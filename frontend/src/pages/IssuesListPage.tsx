@@ -1,40 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetIssuesQuery } from '../store/issuesApi';
+import { StatusBadge, PriorityBadge } from '../components/Badge';
 import type { IssueStatus, Priority } from '../types';
-
-const statusColors: Record<IssueStatus, string> = {
-  BACKLOG: '#888',
-  TODO: '#2563eb',
-  IN_PROGRESS: '#ea580c',
-  IN_REVIEW: '#7c3aed',
-  DONE: '#16a34a',
-};
-
-const priorityColors: Record<Priority, string> = {
-  LOW: '#888',
-  MEDIUM: '#2563eb',
-  HIGH: '#ea580c',
-  URGENT: '#dc2626',
-};
-
-function Badge({ label, color }: { label: string; color: string }) {
-  return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '2px 8px',
-        borderRadius: 4,
-        fontSize: 12,
-        fontWeight: 600,
-        color: '#fff',
-        backgroundColor: color,
-      }}
-    >
-      {label}
-    </span>
-  );
-}
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString();
@@ -139,10 +107,10 @@ export default function IssuesListPage() {
                   </Link>
                 </td>
                 <td style={{ padding: '8px 4px' }}>
-                  <Badge label={issue.status} color={statusColors[issue.status]} />
+                  <StatusBadge status={issue.status} />
                 </td>
                 <td style={{ padding: '8px 4px' }}>
-                  <Badge label={issue.priority} color={priorityColors[issue.priority]} />
+                  <PriorityBadge priority={issue.priority} />
                 </td>
                 <td style={{ padding: '8px 4px', color: '#555', fontSize: 14 }}>
                   {issue.creator?.name ?? '—'}

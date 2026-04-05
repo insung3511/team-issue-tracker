@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import IssuesListPage from './pages/IssuesListPage';
 import CreateIssuePage from './pages/CreateIssuePage';
 import IssueDetailPage from './pages/IssueDetailPage';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
   return (
@@ -14,12 +15,13 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/issues" element={<IssuesListPage />} />
           <Route path="/issues/new" element={<CreateIssuePage />} />
           <Route path="/issues/:id" element={<IssueDetailPage />} />
         </Route>
       </Route>
-      <Route path="*" element={<Navigate to="/issues" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }

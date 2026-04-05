@@ -71,7 +71,7 @@ export async function queryIssuesList(
     const data = await queryIssuesListRepo(userId, filters);
 
     const totalPage = Math.ceil(data.total / filters.limit);
-    if (filters.page > totalPage) {
+    if (totalPage > 0 && filters.page > totalPage) {
         throw new AppError(400, "Page number exceeds total pages", { 
             requestedPage: filters.page, 
             totalPages: totalPage 

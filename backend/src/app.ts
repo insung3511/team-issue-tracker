@@ -7,10 +7,12 @@ import statsRoute from './stats/stats.routes';
 
 import swaggerJSDoc from 'swagger-jsdoc';
 import * as swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 // TODO: mount routers here as they are implemented
 app.use('/api/auth', authRoutes);

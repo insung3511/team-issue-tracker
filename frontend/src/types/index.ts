@@ -62,3 +62,23 @@ export interface AuthResponse {
   user: User;
   token: string;
 }
+
+// Stats API response types (direct objects, no ApiResponse wrapper)
+export interface StatsOverview {
+  BACKLOG: number;
+  TODO: number;
+  IN_PROGRESS: number;
+  IN_REVIEW: number;
+  DONE: number;
+}
+
+export interface StatsByPriority {
+  LOW: number;
+  MEDIUM: number;
+  HIGH: number;
+  URGENT: number;
+}
+
+export interface StatsByAssignee {
+  [name: string]: number;
+}
