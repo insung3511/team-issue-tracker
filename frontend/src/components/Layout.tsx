@@ -37,7 +37,35 @@ export default function Layout() {
           </Link>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          {user && <span style={{ color: '#555', fontSize: 14 }}>{user.name}</span>}
+          {user && (
+            <Link to="/profile" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
+              {user.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt={user.name}
+                  style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    backgroundColor: '#6366f1',
+                    color: '#fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 14,
+                    fontWeight: 600,
+                  }}
+                >
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <span style={{ color: '#555', fontSize: 14 }}>{user.name}</span>
+            </Link>
+          )}
           <button
             onClick={handleLogout}
             style={{

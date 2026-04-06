@@ -1,7 +1,7 @@
 import { Router } from "express"
-import { register, login, getMe } from "./auth.controller";
+import { register, login, getMe, updateProfile } from "./auth.controller";
 import { validate } from "../middleware/validate";
-import { registerSchema, loginSchema } from "./auth.schema";
+import { registerSchema, loginSchema, updateProfileSchema } from "./auth.schema";
 import { authenticate } from "../middleware/auth.middleware";
 
 
@@ -23,6 +23,39 @@ const router = Router();
  * }
  */
 router.get("/me", authenticate, getMe);
+
+/**
+ * @swagger
+ * /auth/profile: {
+ *  patch: {
+ *     summary: "Update current user profile",
+ *     tags: ["Auth"],
+ *     security: [{ "bearerAuth": [] }],
+ *     requestBody: {
+ *       content: {
+ *         "application/json": {
+ *           schema: {
+ *             type: "object",
+ *             properties: {
+ *               name: { type: "string" },
+ *               email: { type: "string" },
+ *               password: { type: "string" },
+ *               avatar: { type: "string" }
+ *             }
+ *           }
+ *         }
+ *       }
+ *     },
+ *     responses: {
+ *      200: { description: "Profile updated successfully" },
+ *      400: { description: "Validation failed" },
+ *      409: { description: "Email already in use" }
+ *     }
+ *    }
+ *   }
+ * }
+ */
+router.patch("/profile", authenticate, validate(updateProfileSchema), updateProfile);
 
 /**
  * @swagger
@@ -87,5 +120,36 @@ router.post("/register", validate(registerSchema), register);
  * }
  */
 router.post("/login", validate(loginSchema), login);
+
+/**
+ * @swagger
+ * /auth/profile: {
+ *  patch: {
+ *   summary: "Update current user profile",
+ *   tags: ["Auth"],
+ *   security: [{ "bearerAuth": [] }],
+ *   requestBody: {
+ *     content: {
+ *       "application/json": {
+ *         schema: {
+ *           type: "object",
+ *           properties: {
+ *             name: { type: "string" },
+ *             email: { type: "string" },
+ *             password: { type: "string" },
+ *             avatar: { type: "string" }
+ *           }
+ *         }
+ *       }
+ *     }
+ *   },
+ *   responses: {
+ *     200: { description: "Profile updated successfully" },
+ *     400: { description: "Validation failed" },
+ *     409: { description: "Email already in use" },
+ *   }
+ * }
+ */
+router.patch("/profile", authenticate, validate(updateProfileSchema), updateProfile);
 
 export default router;

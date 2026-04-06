@@ -7,6 +7,7 @@ import IssuesListPage from './pages/IssuesListPage';
 import CreateIssuePage from './pages/CreateIssuePage';
 import IssueDetailPage from './pages/IssueDetailPage';
 import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/issues" element={<IssuesListPage />} />
           <Route path="/issues/new" element={<CreateIssuePage />} />
           <Route path="/issues/:id" element={<IssueDetailPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

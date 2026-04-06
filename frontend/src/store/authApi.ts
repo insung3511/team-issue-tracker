@@ -20,7 +20,14 @@ export const authApi = baseApi.injectEndpoints({
     getMe: builder.query<ApiResponse<User>, void>({
       query: () => '/auth/me',
     }),
+    updateProfile: builder.mutation<ApiResponse<User>, { name?: string; email?: string; password?: string; avatar?: string }>({
+      query: (body) => ({
+        url: '/auth/profile',
+        method: 'PATCH',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetMeQuery } = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetMeQuery, useUpdateProfileMutation } = authApi;

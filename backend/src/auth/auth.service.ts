@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import { findUserByEmail, createUser, findUserById } from "./auth.repository";
+import { findUserByEmail, createUser, findUserById, updateUser } from "./auth.repository";
 import { AppError } from "../errors/AppError";
 import { User } from "../generated/prisma";
 
@@ -45,5 +45,14 @@ export async function loginUser(email: string, password: string) {
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "1h" });
     const { password: _, ...safeUser } = user;
     return { user: safeUser, token };
+}
 
+export async function updateProfile(userId: number, data: { name?: string; email?: string; password?: string; avatar?: string }) {
+    const user = await getMe(userId); // This will throw if user doesn't exist
+    if (data.password) {
+        data.password = await bcrypt.hash(data.password, 10);
+    }
+    const updatedUser = await updateUser(userId, data);
+    const { password: _, ...safeUser } = updatedUser;
+    return safeUser;
 }

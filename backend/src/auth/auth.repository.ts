@@ -21,3 +21,10 @@ export async function createUser(name: string, email: string, password: string) 
         },
     });
 }
+
+export async function updateUser(id: number, data: { name?: string; email?: string; password?: string; avatar?: string }) {
+    return await prisma.user.update({
+        where: { id },
+        data,
+    });
+}

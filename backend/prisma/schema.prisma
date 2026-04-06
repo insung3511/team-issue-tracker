@@ -12,6 +12,7 @@ model User {
   name      String
   email     String    @unique
   password  String
+  avatar    String?   // URL or file path for profile picture
   role      Role      @default(MEMBER)
   createdIssues  Issue[]   @relation("creator")
   assignedIssues Issue[]   @relation("assignee")
@@ -26,6 +27,7 @@ model Issue {
   description String?
   status      IssueStatus @default(BACKLOG)
   priority    Priority    @default(MEDIUM)
+  labels      String[]
   creator     User        @relation("creator", fields: [creatorId], references: [id])
   creatorId   Int
   assignee    User?       @relation("assignee", fields: [assigneeId], references: [id])
