@@ -8,6 +8,7 @@ import CreateIssuePage from './pages/CreateIssuePage';
 import IssueDetailPage from './pages/IssueDetailPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
+import TeamsPage from './pages/TeamsPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/issues/new" element={<CreateIssuePage />} />
           <Route path="/issues/:id" element={<IssueDetailPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/teams" element={<TeamsPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />

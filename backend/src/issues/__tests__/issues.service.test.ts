@@ -26,6 +26,7 @@ describe('Issues Service', () => {
         name: 'Test User',
         email: 'test@example.com',
         password: hashedPassword,
+        avatar: null,
       },
     });
   });

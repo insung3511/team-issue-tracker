@@ -83,3 +83,11 @@ export interface StatsByPriority {
 export interface StatsByAssignee {
   [name: string]: number;
 }
+
+export interface Team {
+  id: number;
+  name: string;
+  members?: User[];
+  createdAt: string;
+  updatedAt: string;
+}

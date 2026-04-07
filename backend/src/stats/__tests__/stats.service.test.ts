@@ -24,6 +24,7 @@ describe("Stats Service", () => {
         name: "Test User",
         email: "test@example.com",
         password: "password123",
+        avatar: null,
       },
     });
 

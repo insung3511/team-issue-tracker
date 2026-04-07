@@ -17,6 +17,8 @@ model User {
   createdIssues  Issue[]   @relation("creator")
   assignedIssues Issue[]   @relation("assignee")
   comments  Comment[]
+  team      Team?     @relation("teamMembers", fields: [teamId], references: [id])
+  teamId    Int?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -44,6 +46,14 @@ model Comment {
   authorId  Int
   issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
   issueId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  members   User[]   @relation("teamMembers")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

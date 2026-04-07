@@ -35,6 +35,9 @@ export default function Layout() {
           <Link to="/issues" style={{ textDecoration: 'none', color: '#555' }}>
             Issues
           </Link>
+          <Link to="/teams" style={{ textDecoration: 'none', color: '#555' }}>
+            Teams
+          </Link>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {user && (

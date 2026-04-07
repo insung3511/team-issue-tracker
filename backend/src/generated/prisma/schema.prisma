@@ -12,10 +12,13 @@ model User {
   name           String
   email          String    @unique
   password       String
+  avatar         String? // URL or file path for profile picture
   role           Role      @default(MEMBER)
   createdIssues  Issue[]   @relation("creator")
   assignedIssues Issue[]   @relation("assignee")
   comments       Comment[]
+  team           Team?     @relation("teamMembers", fields: [teamId], references: [id])
+  teamId         Int?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
@@ -26,6 +29,7 @@ model Issue {
   description String?
   status      IssueStatus @default(BACKLOG)
   priority    Priority    @default(MEDIUM)
+  labels      String[]
   creator     User        @relation("creator", fields: [creatorId], references: [id])
   creatorId   Int
   assignee    User?       @relation("assignee", fields: [assigneeId], references: [id])
@@ -42,6 +46,14 @@ model Comment {
   authorId  Int
   issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
   issueId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  members   User[]   @relation("teamMembers")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

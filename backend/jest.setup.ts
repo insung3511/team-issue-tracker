@@ -1,2 +1,2 @@
-process.env.DATABASE_URL = "postgresql://bahk_insung@localhost:5432/bahk_insung";
+process.env.DATABASE_URL = "postgresql://tracker:tracker123@localhost:5432/issue_tracker";
 process.env.JWT_SECRET = 'test-secret'

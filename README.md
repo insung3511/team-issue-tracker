@@ -41,6 +41,37 @@
 
 ## Getting Started
 
+### Quick Setup (Automated)
+
+```bash
+# 1. Clone and setup
+cd team-issue-tracker
+
+# 2. Install dependencies
+cd backend && npm install
+cd ../frontend && npm install
+cd ..
+
+# 3. Start PostgreSQL (if not running)
+brew services start postgresql@18
+
+# 4. Create database and user
+psql -U bahk_insung -d postgres -c "CREATE USER tracker WITH PASSWORD 'tracker123';"
+psql -U bahk_insung -d postgres -c "CREATE DATABASE issue_tracker OWNER tracker;"
+psql -U bahk_insung -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE issue_tracker TO tracker;"
+
+# 5. Deploy migrations and seed
+cd backend
+npx prisma migrate deploy
+npx prisma db seed
+
+# 6. Start servers (in separate terminals)
+# Terminal 1: npm run dev (backend - port 3000)
+# Terminal 2: cd ../frontend && npm run dev (frontend - port 5173)
+```
+
+### Manual Setup
+
 ### Prerequisites
 
 - Node.js 18+

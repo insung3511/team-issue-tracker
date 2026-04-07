@@ -125,7 +125,9 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
+  avatar: 'avatar',
   role: 'role',
+  teamId: 'teamId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -136,6 +138,7 @@ exports.Prisma.IssueScalarFieldEnum = {
   description: 'description',
   status: 'status',
   priority: 'priority',
+  labels: 'labels',
   creatorId: 'creatorId',
   assigneeId: 'assigneeId',
   createdAt: 'createdAt',
@@ -147,6 +150,13 @@ exports.Prisma.CommentScalarFieldEnum = {
   content: 'content',
   authorId: 'authorId',
   issueId: 'issueId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TeamScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -188,7 +198,8 @@ exports.Priority = exports.$Enums.Priority = {
 exports.Prisma.ModelName = {
   User: 'User',
   Issue: 'Issue',
-  Comment: 'Comment'
+  Comment: 'Comment',
+  Team: 'Team'
 };
 
 /**

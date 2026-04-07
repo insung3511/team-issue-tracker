@@ -21,6 +21,7 @@ async function main() {
       email: 'admin@tracker.dev',
       password: hashedPassword,
       role: Role.ADMIN,
+      avatar: 'https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff&size=128',
     },
   });
 
@@ -30,6 +31,7 @@ async function main() {
       email: 'alice@tracker.dev',
       password: hashedPassword,
       role: Role.MEMBER,
+      avatar: 'https://ui-avatars.com/api/?name=Alice+Dev&background=10b981&color=fff&size=128',
     },
   });
 
@@ -39,6 +41,7 @@ async function main() {
       email: 'bob@tracker.dev',
       password: hashedPassword,
       role: Role.MEMBER,
+      avatar: 'https://ui-avatars.com/api/?name=Bob+Dev&background=f59e0b&color=fff&size=128',
     },
   });
 
